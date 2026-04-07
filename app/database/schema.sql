@@ -7,6 +7,14 @@ CREATE TABLE IF NOT EXISTS Usuario (
     Estado TEXT NOT NULL DEFAULT 'Espera'
 );
 
+CREATE TABLE IF NOT EXISTS Coche (
+    idCoche INTEGER PRIMARY KEY AUTOINCREMENT,
+    marca TEXT NOT NULL,
+    modelo TEXT NOT NULL,
+    precio REAL NOT NULL,
+    kilometraje INTEGER,
+);
+
 -- Inserción de usuario admin
 INSERT OR IGNORE INTO Usuario (IDUsuario, Nombre, Email, Contrasena, Estado)
 VALUES (1, 'admin', 'admin@admin.com', 'admin', 'Admin');

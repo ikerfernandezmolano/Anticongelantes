@@ -10,15 +10,14 @@ class Sesion:
             cls._instance.usuario = Usuario(0,'','','','',0)  # Inicializa un usuario vacío
         return cls._instance
 
-    def startSession(self, pIDUsuario, pNombre, pEmail, pContraseña, pAREA='Espera', pNombrePKFav="Bulbasaur"):
+    def startSession(self, pIDUsuario, pNombre, pEmail, pContraseña, pAREA='Espera'):
         # Inicia sesión creando un usuario con los datos proporcionados
         self.usuario = Usuario(
             pIDUsuario=pIDUsuario,
             pNombre=pNombre,
             pEmail=pEmail,
             pContrasena=pContraseña,
-            pEstado=pAREA,
-            pFavorito=pNombrePKFav
+            pEstado=pAREA
         )
 
     def cerrarSesion(self):

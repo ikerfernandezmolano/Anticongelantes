@@ -56,12 +56,6 @@ class GestorUsuarios:
             
         from app.controller.model.GestorEspecies import GestorEspecies
         ge = GestorEspecies(self.db).initialize()
-
-        # Contraseña correcta
-        nombre = self.db.execSQL(
-            sql="SELECT Nombre FROM Especie WHERE PokedexID=? LIMIT 1",
-            parameters=[usuario['IDFavorito']]
-        )
         
         sesion = Sesion()
         sesion.startSession(
@@ -69,8 +63,7 @@ class GestorUsuarios:
             pNombre=usuario['Nombre'],
             pEmail=usuario['Email'],
             pContraseña=usuario['Contrasena'],
-            pAREA=usuario['Estado'],
-            pNombrePKFav=nombre[0]['Nombre']
+            pAREA=usuario['Estado']
         )
         return 0 # Estado correcto
         
@@ -205,23 +198,9 @@ class GestorUsuarios:
         
 #-----------------------------MODIFICAR DATOS----------------------------------#
         
-    def modificarDatos(self, email, password_old, password_new, pkFav=None):
+    def modificarDatos(self, email, password_old, password_new):
         # A partir de los datos de la sesión almacenados y los nuevos datos, modifica la información almacenada del usuario de la sesión
         sesion = Sesion().getSession()
-
-        # --- FAVORITO ---
-        if not pkFav:
-            pkFavSes = sesion['Favorito']
-            pkFav = self.db.execSQL(
-                sql="SELECT PokedexID FROM Especie WHERE Nombre=? LIMIT 1",
-                parameters=[pkFavSes]
-            )[0]['PokedexID']
-        else:
-            pkFavSes=pkFav
-            pkFav = self.db.execSQL(
-                sql="SELECT PokedexID FROM Especie WHERE Nombre=? LIMIT 1",
-                parameters=[pkFav]
-            )[0]['PokedexID']
 
         # --- CONTRASEÑA ---
         if password_new.strip():
@@ -237,14 +216,13 @@ class GestorUsuarios:
         # --- UPDATE ---
         try:
             self.db.executeSQL(
-                sql="UPDATE Usuario SET Email=?, Contrasena=?, IDFavorito=? WHERE IDUsuario=?",
-                parameters=[email, password_new, pkFav, sesion['IDUsuario']]
+                sql="UPDATE Usuario SET Email=?, Contrasena=? WHERE IDUsuario=?",
+                parameters=[email, password_new, sesion['IDUsuario']]
             )
 
             Sesion().editSession(
                 pEmail=email,
                 pContraseña=password_new,
-                pNombrePKFav=pkFavSes,
                 pEstado=''
             )
             return 0
@@ -261,22 +239,14 @@ class GestorUsuarios:
         sesion = Sesion().getSession()
         usuario = self.get_usuario(user_id)
         if sesion['Estado'] == 'Admin':
-            # --- FAVORITO ---
-            if not pkFav:
-                pkFav = usuario.IDFavorito
-            else:
-                pkFav = self.db.execSQL(
-                    sql = "SELECT PokedexID FROM Especie WHERE Nombre = ? LIMIT 1",
-                    parameters = [pkFav]
-                )[0]['PokedexID']
             if not password:
                 password = usuario['Contrasena']
                 
             # --- UPDATE ---
             try:
                 self.db.executeSQL(
-                    sql="UPDATE Usuario SET Email=?, Contrasena=?, IDFavorito=? WHERE IDUsuario=?",
-                    parameters=[email, password, pkFav, user_id]
+                    sql="UPDATE Usuario SET Email=?, Contrasena=? WHERE IDUsuario=?",
+                    parameters=[email, password, user_id]
                 )
                 return 0
 

@@ -123,9 +123,8 @@ def modificarDatos_blueprint(db):
             email = request.form.get('email')
             password_old = request.form.get('password_old', '').strip()
             password_new = request.form.get('password_new', '').strip()
-            pkFav = request.form.get('pokefav', '')
             
-            status = service.modificarDatos(email,password_old,password_new,pkFav)
+            status = service.modificarDatos(email,password_old,password_new)
             if status == 0:
                 flash("CAMBIOS REALIZADOS CORRECTAMENTE", "success")
             elif status == 1:
@@ -167,9 +166,8 @@ def modificarDatosAdmin_blueprint(db):
                 if request.method == 'POST':
                     email = request.form.get('email')
                     password = request.form.get('password', '').strip()
-                    pkFav = request.form.get('pokefav', '')
                     
-                    status = service.modificarDatosAdmin(email,password,pkFav,user_id)
+                    status = service.modificarDatosAdmin(email,password,user_id)
                     if status == 0:
                         flash("CAMBIOS REALIZADOS CORRECTAMENTE", "success")
                     elif status == 1:

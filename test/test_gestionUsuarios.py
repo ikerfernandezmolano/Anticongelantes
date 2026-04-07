@@ -69,35 +69,34 @@ class TestUsuarios(unittest.TestCase):
                 Nombre TEXT,
                 Email TEXT UNIQUE,
                 Contrasena TEXT,
-                Estado TEXT,
-                IDFavorito INTEGER
+                Estado TEXT
             )
         """)
 
         # Usuario Aceptado con ID 1
         cursor.execute("""
             INSERT OR IGNORE INTO Usuario
-            (Nombre, Email, Contrasena, Estado, IDFavorito)
-            VALUES ('Admin', 'admin@test.com', 'admin', 'Aceptado', 1)
+            (Nombre, Email, Contrasena, Estado)
+            VALUES ('Admin', 'admin@test.com', 'admin', 'Aceptado')
         """)
 
         # Usuario Pendiente con ID 2
         cursor.execute("""
             INSERT OR IGNORE INTO Usuario 
-            (Nombre, Email, Contrasena, Estado, IDFavorito)
-            VALUES ('Pendiente', 'pendiente@test.com', 'test','Esperando', 4)
+            (Nombre, Email, Contrasena, Estado)
+            VALUES ('Pendiente', 'pendiente@test.com', 'test','Esperando')
         """)
 
         # Usuarios extra
         cursor.execute("""
             INSERT OR IGNORE INTO Usuario 
-            (Nombre, Email, Contrasena, Estado, IDFavorito)
-            VALUES ('User1', 'user1@test.com', '1234', 'Aceptado', 1)
+            (Nombre, Email, Contrasena, Estado)
+            VALUES ('User1', 'user1@test.com', '1234', 'Aceptado')
         """)
         cursor.execute("""
             INSERT OR IGNORE INTO Usuario 
-            (Nombre, Email, Contrasena, Estado, IDFavorito)
-            VALUES ('User2', 'user2@test.com', '1234', 'Aceptado', 1)
+            (Nombre, Email, Contrasena, Estado)
+            VALUES ('User2', 'user2@test.com', '1234', 'Aceptado')
         """)
 
         conn.commit()
@@ -147,7 +146,7 @@ class TestUsuarios(unittest.TestCase):
     def test_5_retroceder(self):
         response = self.client.get('/home')
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b'PIMPAM', response.data)
+        self.assertIn(b'Anticongelantes', response.data)
 
     # -------------------------------------------------
     # TEST 6: Error de conexión
@@ -215,7 +214,7 @@ class TestUsuarios(unittest.TestCase):
     def test_5_retroceder(self):
         response = self.client.get('/home')
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b'PIMPAM', response.data)
+        self.assertIn(b'Anticongelantes', response.data)
 
     # -------------------------------------------------
     # TEST 6: Error de conexión

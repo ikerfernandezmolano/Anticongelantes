@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Usuarios - PimPam</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #333;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even){
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Lista de usuarios</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>IDUsuario</th>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Contrasena</th>
+                <th>Estado</th>
+                <th>IDFavorito</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for u in usuarios %}
+            <tr>
+                <td>{{ u.IDUsuario }}</td>
+                <td>{{ u.Nombre }}</td>
+                <td>{{ u.Email }}</td>
+                <td>{{ u.Contrasena }}</td>
+                <td>{{ u.Estado }}</td>
+                <td>{{ u.IDFavorito }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="6">No hay usuarios registrados.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <h1>Sesión</h1>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>IDUsuario</th>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Contrasena</th>
+                <th>Estado</th>
+                <th>Favorito</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ usuario_sesion.IDUsuario }}</td>
+                <td>{{ usuario_sesion.Nombre }}</td>
+                <td>{{ usuario_sesion.Email }}</td>
+                <td>{{ usuario_sesion.Contrasena }}</td>
+                <td>{{ usuario_sesion.Estado }}</td>
+                <td>{{ usuario_sesion.Favorito }}</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <h1>Lista de especies</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>EsLegendario</th>
+                <th>Generacion</th>
+                <th>Sprite</th>
+                <th>NombreItem</th>
+                <th>Descripcion</th>
+                <th>Altura</th>
+                <th>Peso</th>
+                <th>Categoria</th>
+                <th>TieneEvolucion</th>
+                <th>Prevolucion</th>
+                <th>Sprite</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for e in especies %}
+            <tr>
+                <td>{{ e.PokedexID }}</td>
+                <td>{{ e.Nombre }}</td>
+                <td>{{ e.EsLegendario }}</td>
+                <td>{{ e.Generacion }}</td>
+                <td>{{ e.Sprite }}</td>
+                <td>{{ e.NombreItem }}</td>
+                <td>{{ e.Descripcion }}</td>
+                <td>{{ e.Altura }}</td>
+                <td>{{ e.Peso }}</td>
+                <td>{{ e.Categoria }}</td>
+                <td>{{ e.TieneEvolucion }}</td>
+                <td>{{ e.Prevolucion }}</td>
+                <td>
+                    <img src="{{ url_for('static', filename='sprites/pokemon_{}.png'.format(e.PokedexID)) }}" alt="Sprite">
+                </td>
+
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="12">No hay usuarios registrados.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
+

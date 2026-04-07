@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Modificar Datos Admin - PimPam</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='signin-reg.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&display=swap" rel="stylesheet">
+</head>
+<body class="background">
+    <a href="/gestionUsuarios">
+      <img src="{{ url_for('static', filename='return.png') }}" class="flecha">
+    </a>
+    <div class="Cuerpo"> 
+      <h1>MODIFICAR DATOS</h1>
+      {% for category, mensaje in mensajes %}
+          <label class="message {{ category }}">{{ mensaje }}</label>
+      {% endfor %}
+      <form action="/modificarDatosAdmin?id={{ usuario.IDUsuario }}" method="POST">
+          <div class="Cuerpo">
+              <input type="email" id="email" name="email" placeholder="CORREO ELECTRÓNICO" value="{{ usuario.Email }}" required>
+              <input type="password" id="password" name="password" placeholder="CONTRASEÑA NUEVA">
+              
+              <select id="pokefav" name="pokefav">
+                  <option value="">ELEGIR POKEMON FAVORITO</option>
+                  {% for pokemon in lista_pokemons %}
+                      <option value="{{ pokemon.Nombre }}" {% if usuario.IDFavorito == pokemon.PokedexID %}selected{% endif %}>
+                          {{ pokemon.Nombre }}
+                      </option>
+                  {% endfor %}
+              </select>
+              
+          </div>
+          <div class="Botones">
+              <button type="submit" class="btn">CONFIRMAR</button>
+          </div>
+      </form>
+  </div>
+</body>
+</html>

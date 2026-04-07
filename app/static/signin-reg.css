@@ -1,0 +1,123 @@
+/* Centrar todo el contenido en la pantalla */
+body.background {
+    position: relative; /* importante para que los absolute dentro se posicionen respecto al body */
+    overflow: hidden;
+    height: 100vh;
+    flex-direction: column;
+    background-image: url("/static/fondo.png");
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    font-size: 80px;
+    font-weight: bold;
+    font-family: 'Roboto Condensed', sans-serif;
+    text-shadow: 0 6px 10px rgba(0, 0, 0, 0.6);
+}
+
+.Cuerpo {
+    display: flex;
+    flex-direction: column; /* elementos uno debajo del otro */
+    align-items: center;
+    gap: 15px;              /* espacio entre elementos */
+}
+
+.Botones {
+    display: flex;
+    justify-content: center; /* centra horizontalmente */
+    align-items: center;     /* centra verticalmente */
+    gap: 15px;
+    flex-wrap: wrap;         /* opcional, para que no se salga si hay muchos botones */
+}
+
+.btn {
+    background-color: #333333; /* El rojo característico de PimPam */
+    color: white;
+    border: none;
+    padding: 12px 50px; /* Ajustado para que no sea tan alargado */
+    border-radius: 10px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    margin-top: 25px; /* Espacio respecto a las estadísticas */
+    transition: transform 0.2s, background-color 0.2s;
+    width: fit-content; /* Se ajusta al texto para no estirarse */
+}
+
+.btn:hover {
+    background-color: #000000; /* Oscurece un poco al pasar el ratón */
+    transform: scale(1.05);
+}
+
+input {
+    background-color: #ffffff; /* El rojo característico de PimPam */
+    color: black;
+    border: none;
+    padding: 12px 300px; /* Ajustado para que no sea tan alargado */
+    border-radius: 10px;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    margin-top: 25px; /* Espacio respecto a las estadísticas */
+    transition: transform 0.2s, background-color 0.2s;
+    width: fit-content; /* Se ajusta al texto para no estirarse */
+    text-align: center;
+}
+
+input::placeholder {
+    color: #999;      /* color del placeholder */
+    font-size: 20px;   /* tamaño diferente si quieres */
+}
+
+.flecha {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 170px;
+    height: auto;
+    cursor: pointer;
+    z-index: 100;
+}
+
+label {
+    font-size: 30px;
+    font-weight: bold;
+    font-family: 'Roboto Condensed', sans-serif;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+.message.error {
+    color: red;
+}
+
+.message.success {
+    color: green;
+}
+
+select#pokefav {
+    background-color: #ffffff;
+    color: #000;
+    border: none;
+    padding: 12px 305px; /* Igual que tus inputs */
+    border-radius: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    margin-top: 25px;
+    width: fit-content;
+    text-align: center;
+}
+
+/* Opcional: estilizar el texto de los options */
+select#pokefav option {
+    text-align: center;
+    font-size: 24px;
+}
+
+
+

@@ -1,22 +1,39 @@
 import os.path
+import os
 import sqlite3
 
 from flask import Flask
 
-from app.controller.ui.book_controller import book_blueprint
-from app.controller.ui.loan_controller import loan_blueprint
-from app.controller.ui.user_controlller import user_blueprint
-from app.database.connection import Connection
-from config import Config
+from app.controller.ui.equipos_controller import equipos_blueprint
+from app.controller.ui.pokemon_controller import pokemon_blueprint
+
+from app.controller.ui.pokedex_controller import pokedex_blueprint
+
+from app.database.SGBD import SGBD
+from app.config import Config
+from app.controller.ui.ControladorVista import *
+from app.controller.ui.changelog_controller import changelog_blueprint
+from app.controller.ui.chatbot_controller import chatbot_blueprint
 
 
 def init_db():
     print("Iniciando la base de datos")
-    if os.path.exists(Config.DB_PATH):
-        print("La base de datos existe")
-        conn = sqlite3.connect(Config.DB_PATH)
-        with open('app/database/schema.sql') as f:
+    conn = sqlite3.connect(Config.DB_PATH)
+    try:
+        # 1) schema
+        with open("app/database/schema.sql", encoding="utf-8") as f:
             conn.executescript(f.read())
+
+        # 2) seed chatbot (opcional)
+        seed_path = "app/database/seed_chatbot.sql"
+        if os.path.exists(seed_path):
+            with open(seed_path, encoding="utf-8") as f:
+                conn.executescript(f.read())
+
+        conn.commit()
+    except Exception as e:
+        print(f"Error inicializando BD: {e}")
+    finally:
         conn.close()
 
 def create_app():
@@ -27,10 +44,25 @@ def create_app():
     init_db()
 
     # Crear conexión a la base de datos
-    db = Connection()
+    db = SGBD()
 
-    app.register_blueprint(user_blueprint(db))
-    app.register_blueprint(book_blueprint(db))
-    app.register_blueprint(loan_blueprint(db))
+    # Funcionalidades Iker
+    app.register_blueprint(home_blueprint())
+    app.register_blueprint(registro_blueprint(db))
+    app.register_blueprint(inicioSesion_blueprint(db))
+    app.register_blueprint(amigos_blueprint(db))
+    app.register_blueprint(modificarDatos_blueprint(db))
+    app.register_blueprint(modificarDatosAdmin_blueprint(db))
+    app.register_blueprint(gestionUsuarios_blueprint(db))
+    
+    app.register_blueprint(equipos_blueprint(db))
+    app.register_blueprint(pokemon_blueprint(db))
+    app.register_blueprint(changelog_blueprint(db))
+    app.register_blueprint(pokedex_blueprint(db))
+    app.register_blueprint(chatbot_blueprint(db))
+    
+    # Monitorización
+    app.register_blueprint(db_blueprint(db))
+
 
     return app

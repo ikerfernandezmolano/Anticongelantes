@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Usuarios - PimPam</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='friends.css') }}">
+</head>
+<body class="background">
+    <a href="/pokedex">
+        <img src="{{ url_for('static', filename='return.png') }}" class="flecha">
+    </a>
+    <div class="top-bar">
+        <div class="top-left">
+            <h1>AMIGOS</h1>
+        </div>
+
+        <div class="top-right">
+            <h1>SUGERENCIAS</h1>
+        </div>
+    </div>
+    <div class="pokedex-main-container">
+        <div class="pokedex-left-panel">
+            {% for u in usuarios1 %}
+            <div class="usuario-row">
+                <!-- Sprite a la izquierda -->
+                <div class="usuario-sprite">
+                    <img src="{{ url_for('static', filename='sprites/pokemon_' ~ u['IDFavorito'] ~ '.png') }}" alt="Sprite">
+                </div>
+
+                <!-- Datos del usuario -->
+                <div class="usuario-info">
+                    <p class="usuario-nombre">{{ u['Nombre'] }}</p>
+                    <p class="usuario-favorito">Pokemon Favorito: {{ u['IDFavorito'] }}</p>
+                </div>
+
+                <!-- Botones a la derecha -->
+                <div class="usuario-actions">
+                    <form method="post" style="display:inline;">
+                        <input type="hidden" name="accion" value="dejarseguir">
+                        <input type="hidden" name="user_id" value="{{ u['IDUsuario'] }}">
+                        <button type="submit" style="background:none; border:none; padding:0;">
+                            <img src="{{ url_for('static', filename='rojo.png') }}" class="rojo">
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="pokedex-right-panel">
+            {% for u in usuarios4 %}
+            <div class="usuario-row">
+                <!-- Sprite a la izquierda -->
+                <div class="usuario-sprite">
+                    <img src="{{ url_for('static', filename='sprites/pokemon_' ~ u['IDFavorito'] ~ '.png') }}" alt="Sprite">
+                </div>
+
+                <!-- Datos del usuario -->
+                <div class="usuario-info">
+                    <div class="usuario-nombre-linea">
+                        <p class="usuario-nombre">{{ u['Nombre'] }}</p>
+                        <img src="{{ url_for('static', filename='esperandoamigo.png') }}" 
+                             alt="esperandoamigo" class="icono">
+                    </div>
+                    <p class="usuario-favorito">Pokemon Favorito: {{ u['IDFavorito'] }}</p>
+                </div>
+
+                <!-- Botones a la derecha -->
+                <div class="usuario-actions">
+                    <form method="post" style="display:inline;">
+                        <input type="hidden" name="accion" value="seguir">
+                        <input type="hidden" name="user_id" value="{{ u['IDUsuario'] }}">
+                        <button type="submit" style="background:none; border:none; padding:0;">
+                            <img src="{{ url_for('static', filename='verde.png') }}" class="lapiz">
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+            {% for u in usuarios2 %}
+            <div class="usuario-row">
+                <!-- Sprite a la izquierda -->
+                <div class="usuario-sprite">
+                    <img src="{{ url_for('static', filename='sprites/pokemon_' ~ u['IDFavorito'] ~ '.png') }}" alt="Sprite">
+                </div>
+
+                <!-- Datos del usuario -->
+                <div class="usuario-info">
+                    <div class="usuario-nombre-linea">
+                        <p class="usuario-nombre">{{ u['Nombre'] }}</p>
+                        <img src="{{ url_for('static', filename='solicitado.png') }}" 
+                             alt="solicitado" class="icono">
+                    </div>
+                    <p class="usuario-favorito">Pokemon Favorito: {{ u['IDFavorito'] }}</p>
+                </div>
+
+                <!-- Botones a la derecha -->
+                <div class="usuario-actions">
+                    <form method="post" style="display:inline;">
+                        <input type="hidden" name="accion" value="dejarseguir">
+                        <input type="hidden" name="user_id" value="{{ u['IDUsuario'] }}">
+                        <button type="submit" style="background:none; border:none; padding:0;">
+                            <img src="{{ url_for('static', filename='rojo.png') }}" class="rojo">
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+            {% for u in usuarios3 %}
+            <div class="usuario-row">
+                <!-- Sprite a la izquierda -->
+                <div class="usuario-sprite">
+                    <img src="{{ url_for('static', filename='sprites/pokemon_' ~ u['IDFavorito'] ~ '.png') }}" alt="Sprite">
+                </div>
+
+                <!-- Datos del usuario -->
+                <div class="usuario-info">
+                    <p class="usuario-nombre">{{ u['Nombre'] }}</p>
+                    <p class="usuario-favorito">Pokemon Favorito: {{ u['IDFavorito'] }}</p>
+                </div>
+
+                <!-- Botones a la derecha -->
+                <div class="usuario-actions">
+                    <form method="post" style="display:inline;">
+                        <input type="hidden" name="accion" value="seguir">
+                        <input type="hidden" name="user_id" value="{{ u['IDUsuario'] }}">
+                        <button type="submit" style="background:none; border:none; padding:0;">
+                            <img src="{{ url_for('static', filename='verde.png') }}" class="lapiz">
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

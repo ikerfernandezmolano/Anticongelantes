@@ -1,3 +1,38 @@
+body.background {
+    background-image: url("/static/fondo.png");
+    background-size: cover;
+    background-position: center;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.icon {
+    width: 32px;
+    height: 32px;
+}
+
+.ball {
+    position: relative;
+    width: 120px;
+    text-align: center;
+}
+
+.ball-img {
+    width: 100px;
+}
+
+.ball span {
+    display: block;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.ball.new {
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
 /* =========================
    Estilos generales
    ========================= */

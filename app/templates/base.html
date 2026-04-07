@@ -2,16 +2,16 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Biblioteca</title>
+    <title>PimPam Pokémon</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Sistema de Préstamos de Biblioteca</h1>
+    <h1>PimPam: Gestión de Pokémon</h1>
 
     <nav>
-        <a href="/users">Usuarios</a>
-        <a href="/books">Libros</a>
-        <a href="loans">Préstamos</a>
+        <a href="{{ url_for('pokedex.index') }}">Pokedex</a>
+        <a href="{{ url_for('equipos.cargar_equipos') }}">Equipos</a>
+        <a href="{{ url_for('changelog.ver_changelog') }}">Changelog</a>
     </nav>
 
     {% with messages = get_flashed_messages(with_categories=true) %}

@@ -1,9 +1,9 @@
 import sqlite3
 
-from config import Config
+from app.config import Config
 
 
-class Connection:
+class SGBD:
 
     def __init__(self):
         self.connection = sqlite3.connect(
@@ -12,7 +12,25 @@ class Connection:
         )
         self.connection.row_factory = sqlite3.Row
         self.__initialized = True
-
+        
+    def executeSQL(self, sql, parameters=None):
+        cursor = self.connection.cursor()
+        if parameters:
+            cursor.execute(sql, parameters)
+        else:
+            cursor.execute(sql)
+        self.connection.commit()
+        cursor.close()
+    
+    def execSQL(self, sql, parameters=None):
+        cursor = self.connection.cursor()
+        if parameters:
+            cursor.execute(sql, parameters)
+        else:
+            cursor.execute(sql)
+        rows = cursor.fetchall()
+        cursor.close()
+        return rows
 
     def select(self, sentence, parameters=None):
         cursor = self.connection.cursor()

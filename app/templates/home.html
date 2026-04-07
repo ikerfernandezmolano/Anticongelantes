@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Home - PimPam</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&display=swap" rel="stylesheet">
+</head>
+<body class="background">
+    <div class="Botones">
+        <h1>PIMPAM</h1>
+        <button class="btn" onclick="window.location.href='/inicioSesion'">INICIAR SESIÓN</button>
+        <button class="btn" onclick="window.location.href='/registro'">REGISTRARSE</button>
+    </div>
+</body>
+</html>

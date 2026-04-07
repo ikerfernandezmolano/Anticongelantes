@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrarse - PimPam</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='signin-reg.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&display=swap" rel="stylesheet">
+</head>
+<body class="background">
+    <a href="/">
+      <img src="{{ url_for('static', filename='return.png') }}" class="flecha">
+    </a>
+    <div class="Cuerpo"> 
+      <h1>REGISTRARSE</h1>
+      {% for category, mensaje in mensajes %}
+          <label class="message {{ category }}">{{ mensaje }}</label>
+      {% endfor %}
+      <form action="/registro" method="POST">
+          <div class="Cuerpo">
+              <input type="user" id="user" name="user" placeholder="USUARIO" required>
+              <input type="email" id="email" name="email" placeholder="CORREO ELECTRÓNICO" required>
+              <input type="password" id="password" name="password" placeholder="CONTRASEÑA" required>
+              <input type="password" id="confirm_password" name="confirm_password" placeholder="CONFIRMAR CONTRASEÑA" required>
+          </div>
+          <div class="Botones">
+              <button type="submit" class="btn">CONFIRMAR</button>
+          </div>
+      </form>
+  </div>
+</body>
+</html>

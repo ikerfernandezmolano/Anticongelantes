@@ -1,0 +1,69 @@
+/* Centrar todo el contenido en la pantalla */
+body.background {
+    overflow: hidden;
+    height: 100vh;
+    flex-direction: column;
+    background-image: url("/static/fondo.png");
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center; /* centro vertical */
+    align-items: center;     /* centro horizontal */
+}
+
+h1 {
+    font-size: 80px;
+    font-weight: bold;
+    font-family: 'Roboto Condensed', sans-serif;
+    text-shadow: 0 6px 10px rgba(0, 0, 0, 0.6);
+}
+
+/* Contenedor de los botones y el título */
+.Botones {
+    display: flex;
+    flex-direction: column; /* elementos uno debajo del otro */
+    align-items: center;
+    gap: 15px;              /* espacio entre elementos */
+}
+
+.btn {
+    background-color: #d9534f; /* El rojo característico de PimPam */
+    color: white;
+    border: none;
+    padding: 12px 300px; /* Ajustado para que no sea tan alargado */
+    border-radius: 10px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 6px 10px rgba(0,0,0,0.6);
+    margin-top: 25px; /* Espacio respecto a las estadísticas */
+    transition: transform 0.2s, background-color 0.2s;
+    width: fit-content; /* Se ajusta al texto para no estirarse */
+}
+
+.btn:hover {
+    background-color: #c0392b; /* Oscurece un poco al pasar el ratón */
+    transform: scale(1.05);
+}
+
+.btn-cancelar {
+    background-color: #333333; /* El rojo característico de PimPam */
+    color: white;
+    border: none;
+    padding: 12px 50px; /* Ajustado para que no sea tan alargado */
+    border-radius: 10px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    margin-top: 25px; /* Espacio respecto a las estadísticas */
+    transition: transform 0.2s, background-color 0.2s;
+    width: fit-content; /* Se ajusta al texto para no estirarse */
+}
+
+.btn-cancelar:hover {
+    background-color: #000000; /* Oscurece un poco al pasar el ratón */
+    transform: scale(1.05);
+}
+

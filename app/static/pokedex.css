@@ -1,0 +1,188 @@
+/* Bloqueo total de scroll en la página principal */
+body.background {
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Empujamos todo hacia el inicio (arriba) */
+    background-image: url("/static/fondo.png");
+    background-size: cover;
+    background-position: center;
+}
+
+/* La barra superior de tu compañera es un poco alta (120px), la comprimimos un poco */
+.top-bar {
+    height: 90px !important; /* Forzamos a que sea más baja para ganar espacio */
+    padding: 10px 80px !important;
+}
+
+/* EL CUADRO BLANCO: Ajustado para que suba a tope */
+.pokedex-main-container {
+    background: white;
+    width: 95%;
+    max-width: 1450px;
+    /* Margen superior casi nulo (5px) y el resto automático para que "sobre" abajo */
+    margin: 5px auto auto auto; 
+    padding: 30px;
+    border-radius: 30px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1); 
+    display: flex;
+    /* REPARTO 50/50 */
+    gap: 0; 
+    height: 72vh; /* Reducimos la altura para que no llegue al fondo */
+    box-sizing: border-box;
+}
+
+/* PANEL IZQUIERDO: Exactamente el 50% */
+.pokedex-left-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; /* Esto centra el botón y la imagen horizontalmente */
+    text-align: center;  /* Centra los textos */
+    padding: 20px 40px;
+    border-right: 1px solid #f2f2f2;
+}
+
+/* PANEL DERECHO: Exactamente el otro 50% */
+.pokedex-right-panel {
+    flex: 1;
+    overflow-y: auto;
+    padding-left: 50px;
+}
+
+/* Rejilla de la derecha: 2 columnas */
+.pokemon-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 15px;
+}
+
+/* Tarjetas individuales de la lista */
+.pokemon-item-card {
+    background: #fdfdfd;
+    border-radius: 15px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border: 1px solid #eee;
+}
+
+/* Ajuste de imágenes para que no empujen el diseño */
+.pokedex-left-panel img {
+    width: 100%;
+    max-height: 280px;
+    object-fit: contain;
+}
+
+.pokemon-item-card img {
+    width: 70px;
+    height: 70px;
+}
+
+/* El BOTÓN DE ATAQUES: Rojo, centrado y con tamaño justo */
+.btn-ataques {
+    background-color: #d9534f; /* El rojo característico de PimPam */
+    color: white;
+    border: none;
+    padding: 12px 35px; /* Ajustado para que no sea tan alargado */
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    margin-top: 25px; /* Espacio respecto a las estadísticas */
+    transition: transform 0.2s, background-color 0.2s;
+    width: fit-content; /* Se ajusta al texto para no estirarse */
+}
+
+.btn-ataques:hover {
+    background-color: #c0392b; /* Oscurece un poco al pasar el ratón */
+    transform: scale(1.05);
+}
+
+/* Ajuste adicional para las estadísticas para que se vean limpias */
+.stats-mini {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+    width: 80%;
+}
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #ffffff;
+    border-radius: 8px;
+    min-width: 180px;
+    display: none;
+    flex-direction: column;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    z-index: 1000;
+}
+
+.dropdown-menu a {
+    padding: 12px 16px;
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.dropdown-menu a:hover {
+    background-color: #ffffff;
+}
+
+.dropdown-menu.show {
+    display: flex;
+}
+
+.dropdown-toggle {
+    display: flex;
+    align-items: center;   /* 🔥 centra verticalmente */
+    gap: 8px;
+    text-decoration: none;
+    color: white;
+}
+
+.dropdown-toggle span {
+    font-size: 18px;   /* prueba 20px si lo quieres más grande */
+    font-weight: bold; /* opcional */
+}
+
+/* Todos los enlaces del menú: MI CUENTA, AMIGOS, EQUIPOS */
+.menu .menu-item,
+.menu .menu-item.dropdown-toggle {
+    display: flex;           /* hace que texto e imagen estén en fila */
+    flex-direction: row;     /* fila horizontal */
+    align-items: center;     /* centra verticalmente */
+    gap: 8px;                /* separación texto / icono */
+    text-decoration: none;   /* quita subrayado */
+    color: black;            /* texto visible */
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Texto dentro del menú */
+.menu .menu-item span {
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 1;  /* evita que quede desalineado */
+}
+
+.menu a,
+.menu a:visited {
+    text-decoration: none; /* quita subrayado */
+    color: black;          /* color normal */
+}
+
+.menu a:hover {
+    color: black;          /* evita que se ponga azul al pasar el ratón */
+}
+

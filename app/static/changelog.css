@@ -1,0 +1,307 @@
+/* =========================================
+   VARIABLES GLOBALES (:root)
+   ========================================= */
+/* Definimos colores y fuentes en variables para facilitar el mantenimiento 
+   y asegurar la coherencia visual en toda la página. */
+:root {
+    --red-primary: #e74c3c;  /* Rojo corporativo estilo Pokedex */
+    --bg-color: #f8f9fa;
+    --text-dark: #333;
+    --font-title: 'Anton', sans-serif; /* Fuente para títulos impactantes */
+    --font-body: Arial, sans-serif;
+}
+
+/* =========================================
+   CONFIGURACIÓN DEL BODY
+   ========================================= */
+body {
+    /* Imagen de fondo fija que cubre toda la pantalla */
+    background-image: url('fondoChangelog.png'); 
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed; /* Efecto Parallax: el fondo no se mueve al hacer scroll */
+    background-color: var(--red-primary);
+    
+    font-family: var(--font-body);
+    margin: 0;
+    padding: 10px 20px 20px 20px; 
+    
+    /* Usamos Flexbox para centrar el contenido principal verticalmente */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    box-sizing: border-box; 
+}
+
+/* =========================================
+   BARRA DE NAVEGACIÓN SUPERIOR
+   ========================================= */
+.top-bar {
+    width: 100%;
+    max-width: 98%; 
+    display: flex;
+    justify-content: space-between; /* Separa los elementos a los extremos */
+    align-items: flex-start; 
+    padding: 5px 0; 
+    margin-bottom: 15px;
+}
+
+/* Estilos para la flecha de volver atrás */
+.back-arrow img {
+    width: 35px; 
+    height: 35px;
+    opacity: 0.8; /* Transparencia inicial */
+    cursor: pointer;
+    transition: transform 0.2s; /* Suaviza la animación de escala */
+    margin-left: -5px; 
+}
+
+/* Efecto hover: agranda ligeramente la flecha */
+.back-arrow img:hover {
+    transform: scale(1.1);
+}
+
+/* Contenedor de iconos del menú derecho */
+.menu-icons {
+    display: flex;
+    gap: 30px; /* Espaciado entre iconos */
+    margin-right: -5px;
+}
+
+/* Elementos individuales del menú */
+.menu-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    opacity: 0.9;
+    transition: opacity 0.3s, transform 0.2s;
+}
+
+.menu-item:hover {
+    opacity: 1;
+    transform: translateY(-2px); /* Pequeño salto hacia arriba */
+}
+
+.menu-item img {
+    width: 35px;
+    height: 35px;
+    object-fit: contain;
+    margin-bottom: 5px;
+    filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.2)); /* Sombra suave para dar profundidad */
+}
+
+.menu-item span {
+    font-size: 0.7rem;
+    font-weight: bold;
+    color: white; 
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5); /* Mejora legibilidad sobre el fondo rojo */
+}
+
+/* =========================================
+   TARJETA PRINCIPAL (CONTENEDOR)
+   ========================================= */
+.card-container {
+    background: white;
+    width: 100%;
+    max-width: 96%; /* Diseño responsive: no ocupa todo el ancho en pantallas grandes */
+    min-height: 75vh; 
+    border-radius: 15px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.25); /* Sombra difusa para efecto 'flotante' */
+    padding: 50px; 
+    box-sizing: border-box;
+    position: relative;
+    border-top: 6px solid var(--red-primary); /* Detalle estético superior */
+    
+    display: flex;
+    flex-direction: column;
+}
+
+/* =========================================
+   CABECERA DEL CHANGELOG
+   ========================================= */
+.changelog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    padding-bottom: 25px;
+    border-bottom: 3px solid #f0f0f0; /* Línea separadora */
+}
+
+.title {
+    font-family: var(--font-title);
+    font-size: 3.5rem; 
+    margin: 0;
+    color: var(--text-dark);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.actions {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+/* Estilos de botones personalizados */
+.btn-rojo {
+    background-color: var(--red-primary);
+    color: white;
+    border: none;
+    
+    padding: 12px 35px; 
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    
+    /* Sombra sólida inferior para efecto 3D */
+    box-shadow: 0 4px 0 #c0392b; 
+    transition: transform 0.1s, box-shadow 0.1s;
+    white-space: nowrap; 
+}
+
+/* Efecto de 'pulsar' el botón */
+.btn-rojo:active {
+    transform: translateY(3px); /* Se mueve hacia abajo */
+    box-shadow: none; /* Desaparece la sombra 3D */
+}
+
+/* =========================================
+   LISTA DE MENSAJES (SCROLLABLE)
+   ========================================= */
+.message-list {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    flex-grow: 1; /* Ocupa todo el espacio disponible restante */
+    overflow-y: auto; /* Habilita scroll vertical si hay muchos mensajes */
+    padding-right: 15px;
+}
+
+.message-item {
+    display: flex;
+    align-items: flex-start;
+    padding-bottom: 20px;
+    border-bottom: 1px dashed #e0e0e0;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.message-item:hover {
+    background-color: #f0f0f0; /* Feedback visual al pasar el ratón */
+}
+
+.avatar img {
+    width: 55px;
+    height: 55px;
+    object-fit: contain;
+    margin-right: 20px;
+}
+
+.content {
+    flex: 1;
+    padding-top: 5px;
+}
+
+.text {
+    margin: 0 0 8px 0;
+    font-size: 1.2rem; 
+    line-height: 1.5;
+    color: #444;
+}
+
+.username {
+    font-weight: bold;
+    color: #2c3e50;
+    font-size: 1.25rem;
+}
+
+.date {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #888;
+}
+
+.no-activity {
+    text-align: center;
+    color: #999;
+    font-style: italic;
+    margin-top: 50px;
+    font-size: 1.2rem;
+}
+
+/* =========================================
+   VENTANA MODAL (POPUP)
+   ========================================= */
+/* Fondo oscuro semitransparente que cubre toda la pantalla */
+.modal-overlay {
+    display: none; /* Oculto por defecto, se activa con JS */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); 
+    z-index: 1000; /* Asegura que esté por encima de todo */
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px); /* Efecto de desenfoque del fondo */
+}
+
+/* Tarjeta interna del popup */
+.popup-card {
+    background: white;
+    width: 90%;
+    max-width: 700px;
+    border-radius: 15px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    padding: 20px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Animación de entrada para el modal */
+.modal-overlay .popup-card {
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Elementos internos del popup */
+.popup-header {
+    background: #f9f9f9;
+    padding: 10px 15px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: fit-content;
+    margin-left: auto;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    font-size: 0.85rem;
+    color: #555;
+    position: absolute;
+    top: 20px; right: 20px;
+}
+
+.popup-body { display: flex; align-items: center; margin-top: 40px; }
+.col-img { flex: 1; display: flex; justify-content: center; }
+.poke-big { width: 180px; height: auto; filter: drop-shadow(5px 5px 10px rgba(0,0,0,0.2)); }
+.col-info { flex: 1.2; padding-left: 20px; display: flex; flex-direction: column; justify-content: center; }
+.poke-type { font-family: 'Anton', sans-serif; color: #3498db; font-size: 1.8rem; margin: 0 0 10px 0; }
+.poke-desc { font-size: 1rem; line-height: 1.4; color: #333; font-weight: bold; margin-bottom: 15px; }
+.poke-stats { font-size: 0.8rem; font-weight: bold; color: #666; border-top: 2px solid #eee; padding-top: 10px; }
+.popup-footer { display: flex; justify-content: center; margin-top: 20px; }
+.btn-ataques { background-color: #c0392b; color: white; font-family: 'Anton', sans-serif; font-size: 1.2rem; border: none; padding: 10px 40px; border-radius: 5px; cursor: pointer; box-shadow: 0 4px 0 #96281b; }
+.robot-icon { position: absolute; bottom: 20px; left: 20px; opacity: 0.8; }
+.robot-icon img { width: 30px; }

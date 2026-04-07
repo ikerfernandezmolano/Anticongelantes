@@ -1,0 +1,209 @@
+/* Centrar todo el contenido en la pantalla */
+body.background {
+    position: relative; /* importante para que los absolute dentro se posicionen respecto al body */
+    overflow: hidden;
+    height: 100vh;
+    flex-direction: column;
+    background-image: url("/static/fondo.png");
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    font-size: 30px;
+    font-weight: bold;
+    font-family: 'Roboto Condensed', sans-serif;
+    text-shadow: 0 6px 10px rgba(0, 0, 0, 0.6);
+}
+
+.Cuerpo {
+    display: flex;
+    flex-direction: column; /* elementos uno debajo del otro */
+    align-items: center;
+    gap: 15px;              /* espacio entre elementos */
+}
+
+.Botones {
+    display: flex;
+    justify-content: center; /* centra horizontalmente */
+    align-items: center;     /* centra verticalmente */
+    gap: 15px;
+    flex-wrap: wrap;         /* opcional, para que no se salga si hay muchos botones */
+}
+
+.btn {
+    background-color: #333333; /* El rojo característico de PimPam */
+    color: white;
+    border: none;
+    padding: 12px 50px; /* Ajustado para que no sea tan alargado */
+    border-radius: 10px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    margin-top: 25px; /* Espacio respecto a las estadísticas */
+    transition: transform 0.2s, background-color 0.2s;
+    width: fit-content; /* Se ajusta al texto para no estirarse */
+}
+
+.btn:hover {
+    background-color: #000000; /* Oscurece un poco al pasar el ratón */
+    transform: scale(1.05);
+}
+
+input {
+    background-color: #ffffff; /* El rojo característico de PimPam */
+    color: black;
+    border: none;
+    padding: 12px 300px; /* Ajustado para que no sea tan alargado */
+    border-radius: 10px;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    margin-top: 25px; /* Espacio respecto a las estadísticas */
+    transition: transform 0.2s, background-color 0.2s;
+    width: fit-content; /* Se ajusta al texto para no estirarse */
+    text-align: center;
+}
+
+input::placeholder {
+    color: #999;      /* color del placeholder */
+    font-size: 20px;   /* tamaño diferente si quieres */
+}
+
+.flecha {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 170px;
+    height: auto;
+    cursor: pointer;
+    z-index: 100;
+}
+
+label {
+    font-size: 30px;
+    font-weight: bold;
+    font-family: 'Roboto Condensed', sans-serif;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+.message.error {
+    color: red;
+}
+
+.message.success {
+    color: green;
+}
+
+.top-bar {
+    height: 90px !important; /* Forzamos a que sea más baja para ganar espacio */
+    padding: 10px 80px !important;
+}
+
+/* EL CUADRO BLANCO: Ajustado para que suba a tope */
+.pokedex-main-container {
+    background: white;
+    width: 95%;
+    max-width: 1450px;
+    /* Margen superior casi nulo (5px) y el resto automático para que "sobre" abajo */
+    margin: 5px auto auto auto; 
+    padding: 30px;
+    border-radius: 30px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1); 
+    display: flex;
+    /* REPARTO 50/50 */
+    gap: 0; 
+    height: 72vh; /* Reducimos la altura para que no llegue al fondo */
+    box-sizing: border-box;
+}
+
+/* PANEL DERECHO: Exactamente el otro 50% */
+.pokedex-left-panel, .pokedex-right-panel {
+    flex: 1;
+    overflow-y: auto;
+    padding-left: 50px;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 30px;
+}
+
+.top-bar {
+    width: 95%;
+    max-width: 1450px;
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-end;
+    position: relative;
+    height: 80px;
+}
+
+.top-left,
+.top-right {
+    flex: 1;
+    text-align: center;
+}
+
+.top-left h1 {
+    text-align: center;
+}
+
+.top-right h1 {
+    text-align: center;
+}
+
+.usuario-row {
+    display: flex;
+    align-items: center; /* centra verticalmente */
+    justify-content: space-between;
+    padding: 10px;
+    margin-bottom: 10px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.usuario-sprite img {
+    width: 90px;
+    height: 90px;
+}
+
+.usuario-info {
+    flex-grow: 1;
+    margin-left: 20px;
+}
+
+.usuario-info p {
+    margin: 0;
+}
+
+.usuario-actions a img button{
+    width: 30px;
+    height: 30px;
+    margin-left: 10px;
+}
+
+a {
+    outline: none;
+    border: none;
+    text-decoration: none;
+}
+
+.usuario-nombre-linea {
+    display: flex;
+    align-items: center; /* centra verticalmente el icono con el texto */
+    gap: 6px;            /* espacio entre nombre y icono */
+}
+
+.icono {
+    width: 28px;          /* tamaño pequeño */
+    height: 28px;
+    opacity: 0.8;         /* opcional: que se vea suave */
+}
+
+.usuario-actions button img {
+    width: 55px;   /* tamaño deseado */
+    height: 55px;
+}

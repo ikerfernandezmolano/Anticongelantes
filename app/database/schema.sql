@@ -4,14 +4,12 @@ CREATE TABLE IF NOT EXISTS Usuario (
     Nombre TEXT NOT NULL UNIQUE,
     Email TEXT NOT NULL UNIQUE,
     Contrasena TEXT NOT NULL,
-    Estado TEXT NOT NULL DEFAULT 'Espera',
-    IDFavorito INTEGER DEFAULT 1,
-    FOREIGN KEY (IDFavorito) REFERENCES Especie(PokedexID)
+    Estado TEXT NOT NULL DEFAULT 'Espera'
 );
 
 -- Inserción de usuario admin
-INSERT OR IGNORE INTO Usuario (IDUsuario, Nombre, Email, Contrasena, Estado, IDFavorito)
-VALUES (1, 'admin', 'admin@admin.com', 'admin', 'Admin', 1);
+INSERT OR IGNORE INTO Usuario (IDUsuario, Nombre, Email, Contrasena, Estado)
+VALUES (1, 'admin', 'admin@admin.com', 'admin', 'Admin');
 
 CREATE TABLE IF NOT EXISTS Seguidor (
     IDUsuarioSeguido INTEGER,

@@ -54,7 +54,9 @@ def create_app():
     app.register_blueprint(modificarDatos_blueprint(db))
     app.register_blueprint(modificarDatosAdmin_blueprint(db))
     app.register_blueprint(gestionUsuarios_blueprint(db))
-    
+
+    app.register_blueprint(catalogo_blueprint(db))
+
     app.register_blueprint(equipos_blueprint(db))
     app.register_blueprint(pokemon_blueprint(db))
     app.register_blueprint(changelog_blueprint(db))

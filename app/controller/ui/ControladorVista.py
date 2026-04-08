@@ -1,6 +1,7 @@
 from flask import Blueprint, request, redirect, render_template, flash, url_for
 from app.controller.model.GestorUsuarios import GestorUsuarios
 from app.controller.model.GestorEspecies import GestorEspecies
+from app.controller.model.GestorCoches import GestorCoches
 from flask import get_flashed_messages
 
 def home_blueprint():
@@ -84,7 +85,19 @@ def inicioSesion_blueprint(db):
         return render_template('inicioSesion.html', mensajes=mensajes)
 
     return bp
-    
+
+def catalogo_blueprint(db):
+    bp = Blueprint('catalogo', __name__)
+    service = GestorCoches(db)
+
+    @bp.route('/catalogo')
+    def mostrar_catalogo():
+        lista_vehiculos = service.get_all()
+        return render_template('catalogo.html', coches=lista_vehiculos)
+
+    return bp
+
+
 def amigos_blueprint(db):
     bp = Blueprint('amigos', __name__)
     service = GestorUsuarios(db)

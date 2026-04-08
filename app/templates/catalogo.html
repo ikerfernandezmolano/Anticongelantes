@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container" style="padding-top: 50px; text-align: center;">
+    <div class="form-container" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2); display: inline-block; width: 90%;">
+        
+        <h2 style="color: white; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 2px;">
+            Catálogo de Vehículos
+        </h2>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+            {% for coche in coches %}
+            <div style="background: white; border-radius: 15px; overflow: hidden; color: #333; box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: transform 0.3s;">
+                <div style="height: 150px; background: #ddd; display: flex; align-items: center; justify-content: center;">
+                    <span style="color: #999;">🚗 Imagen Vehículo</span>
+                </div>
+                
+                <div style="padding: 15px;">
+                    <h3 style="margin: 0; font-size: 1.2rem;">{{ coche['marca'] }}</h3>
+                    <p style="color: #666; font-style: italic;">{{ coche['modelo'] }}</p>
+                    <hr>
+                    <div style="display: flex; justify-content: space-between; font-weight: bold;">
+                        <span>{{ "{:,.0f}".format(coche['precio']) }} €</span>
+                        <span style="color: #28a745;">{{ coche['kilometraje'] }} km</span>
+                    </div>
+                    <button style="width: 100%; margin-top: 15px; padding: 10px; background: #e63946; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">
+                        VER DETALLES
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

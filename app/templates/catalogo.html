@@ -1,35 +1,55 @@
-{% extends "base.html" %}
-
-{% block content %}
-<div class="container" style="padding-top: 50px; text-align: center;">
-    <div class="form-container" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2); display: inline-block; width: 90%;">
-        
-        <h2 style="color: white; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 2px;">
-            Catálogo de Vehículos
-        </h2>
-
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
-            {% for coche in coches %}
-            <div style="background: white; border-radius: 15px; overflow: hidden; color: #333; box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: transform 0.3s;">
-                <div style="height: 150px; background: #ddd; display: flex; align-items: center; justify-content: center;">
-                    <span style="color: #999;">🚗 Imagen Vehículo</span>
-                </div>
-                
-                <div style="padding: 15px;">
-                    <h3 style="margin: 0; font-size: 1.2rem;">{{ coche['marca'] }}</h3>
-                    <p style="color: #666; font-style: italic;">{{ coche['modelo'] }}</p>
-                    <hr>
-                    <div style="display: flex; justify-content: space-between; font-weight: bold;">
-                        <span>{{ "{:,.0f}".format(coche['precio']) }} €</span>
-                        <span style="color: #28a745;">{{ coche['kilometraje'] }} km</span>
-                    </div>
-                    <button style="width: 100%; margin-top: 15px; padding: 10px; background: #e63946; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">
-                        VER DETALLES
-                    </button>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Catálogo - Anticongelantes</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='signin-reg.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+    <style>
+        .catalogo-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            width: 90%;
+            max-width: 1200px;
+            margin-top: 20px;
+            padding-bottom: 50px;
+        }
+        .car-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            color: white;
+            transition: 0.3s;
+        }
+        .car-card:hover { transform: scale(1.05); background: rgba(255, 255, 255, 0.15); }
+        .car-price { font-size: 24px; color: #f2f2f2; font-weight: bold; margin: 10px 0; }
+        .car-info { font-size: 14px; opacity: 0.8; }
+        .nav-header { position: absolute; top: 20px; right: 40px; color: white; }
+    </style>
+</head>
+<body class="background">
+    <div class="nav-header">
+        <span>Bienvenido, <strong>{{ usuario.Nombre }}</strong></span> |
+        <a href="/logout" style="color: #ff4d4d; text-decoration: none;">Cerrar Sesión</a>
     </div>
-</div>
-{% endblock %}
+
+    <h1 style="margin-top: 80px;">CATÁLOGO DE VEHÍCULOS</h1>
+
+    <div class="catalogo-container">
+        {% for coche in coches %}
+        <div class="car-card">
+            <img src="{{ url_for('static', filename='fondo.jpg') }}" style="width: 100%; border-radius: 10px; margin-bottom: 15px;">
+            <h2>{{ coche['marca'] }}</h2>
+            <p>{{ coche['modelo'] }}</p>
+            <div class="car-price">{{ "{:,.0f}".format(coche['precio']) }} €</div>
+            <div class="car-info">{{ coche['kilometraje'] }} KM</div>
+            <button class="btn" style="width: 100%; margin-top: 15px; font-size: 16px;">DETALLES</button>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

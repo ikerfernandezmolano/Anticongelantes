@@ -71,7 +71,7 @@ def inicioSesion_blueprint(db):
             password = request.form.get('password', '').strip()
             status = service.iniciarSesion(email,password)
             if status == 0:
-                return redirect(url_for('pokedex.index'))
+                return redirect(url_for('catalogo.mostrar_catalogo'))
             elif status == 1:
                 flash("EL USUARIO NO EXISTE", "error")
             elif status == 2:
@@ -86,14 +86,21 @@ def inicioSesion_blueprint(db):
 
     return bp
 
+
 def catalogo_blueprint(db):
     bp = Blueprint('catalogo', __name__)
     service = GestorCoches(db)
+    service_user = GestorUsuarios(db)
 
     @bp.route('/catalogo')
     def mostrar_catalogo():
+        usuario_sesion = service_user.getSession()
+        # Si no hay sesión, protegemos la ruta mandando al login
+        if not usuario_sesion or usuario_sesion['IDUsuario'] == 0:
+            return redirect(url_for('inicioSesion.iniciarSesion'))
+
         lista_vehiculos = service.get_all()
-        return render_template('catalogo.html', coches=lista_vehiculos)
+        return render_template('catalogo.html', coches=lista_vehiculos, usuario=usuario_sesion)
 
     return bp
 

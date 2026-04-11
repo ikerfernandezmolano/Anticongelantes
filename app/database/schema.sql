@@ -7,19 +7,26 @@ CREATE TABLE IF NOT EXISTS Usuario (
     Estado TEXT NOT NULL DEFAULT 'Espera'
 );
 
+DROP TABLE IF EXISTS Coche;
+
 CREATE TABLE Coche (
     idCoche INTEGER PRIMARY KEY AUTOINCREMENT,
     marca TEXT NOT NULL,
     modelo TEXT NOT NULL,
     precio REAL NOT NULL,
     kilometraje INTEGER,
-    imagen_url TEXT DEFAULT 'default_car.png'
+    imagen TEXT DEFAULT 'fondo.jpg'
 );
 
--- Datos de ejemplo acordes a la temática de "Anticongelantes"
-INSERT INTO Coche (marca, modelo, precio, kilometraje) VALUES ('Ferrari', '458 Italia', 250000, 12000);
-INSERT INTO Coche (marca, modelo, precio, kilometraje) VALUES ('Lamborghini', 'Huracán', 200000, 5000);
-INSERT INTO Coche (marca, modelo, precio, kilometraje) VALUES ('Porsche', '911 Carrera', 120000, 30000);
+
+INSERT INTO Coche (marca, modelo, precio, kilometraje, imagen)
+VALUES ('Ferrari', '458 Italia', 250000, 12000, 'ferrari.png');
+
+INSERT INTO Coche (marca, modelo, precio, kilometraje, imagen)
+VALUES ('Lamborghini', 'Huracán', 200000, 5000, 'Lamborghini.png');
+
+INSERT INTO Coche (marca, modelo, precio, kilometraje, imagen)
+VALUES ('Porsche', '911 Carrera', 120000, 30000, 'porsche.png');
 
 -- Inserción de usuario admin
 INSERT OR IGNORE INTO Usuario (IDUsuario, Nombre, Email, Contrasena, Estado)

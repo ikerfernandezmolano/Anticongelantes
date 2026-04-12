@@ -7,37 +7,88 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='signin-reg.css') }}">
     <style>
         .detalles-container { display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
-        .info-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); border-radius: 30px; padding: 40px; max-width: 1000px; display: flex; gap: 40px; color: white; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 25px 50px rgba(0,0,0,0.6); }
-        .foto-detalle { width: 50%; object-fit: contain; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.4)); }
-        .precio-grande { font-size: 45px; color: #00ff88; font-weight: bold; margin: 15px 0; }
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px); z-index: 1000; justify-content: center; align-items: center; }
-        .modal-content { background: rgba(40, 40, 40, 0.95); padding: 30px; border-radius: 20px; border: 1px solid #00ff88; text-align: center; width: 320px; color: white; }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 40px;
+            max-width: 900px;
+            width: 100%;
+            display: grid; /* Usamos Grid para control total del espacio */
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+            box-sizing: border-box;
+        }
+
+        .foto-detalle { width: 100%; height: auto; object-fit: contain; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.4)); }
+
+        .datos-tecnicos {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-width: 0; /* Permite que el contenido se encoja si es necesario */
+        }
+
+        /* ARREGLO PARA EL NOMBRE: No se sale nunca */
+        .datos-tecnicos h1 {
+            font-size: clamp(24px, 4vw, 45px);
+            margin: 10px 0;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            text-transform: uppercase;
+        }
+
+        .precio-grande { font-size: 40px; color: #00ff88; font-weight: bold; margin: 10px 0; }
+
+        .btn-contactar {
+            width: 100%;
+            margin-top: 30px;
+            padding: 15px;
+            font-weight: bold;
+            background: #00ff88;
+            color: #1a1a1a;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-contactar:hover { transform: scale(1.02); background: #00cc6e; }
+
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(5px); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-content { background: #1a1a1a; padding: 30px; border-radius: 20px; border: 1px solid #00ff88; text-align: center; width: 320px; color: white; }
     </style>
 </head>
 <body class="background">
     <div class="detalles-container">
         <div class="info-card">
             <img src="{{ url_for('static', filename=coche.imagen) }}" class="foto-detalle" onerror="this.src='/static/fondo.jpg'">
+
             <div class="datos-tecnicos">
-                <a href="/catalogo" style="color: #00ff88; font-weight: bold; text-decoration: none;">← VOLVER</a>
+                <a href="/catalogo" style="color: #00ff88; font-weight: bold; text-decoration: none; margin-bottom: 20px; display: block;">← VOLVER</a>
                 <h1>{{ coche.marca }}</h1>
                 <p class="precio-grande">{{ "{:,.0f}".format(coche.precio) | replace(',', '.') }} €</p>
-                <ul style="list-style: none; padding: 0; line-height: 2.5;">
+                <ul style="list-style: none; padding: 0; line-height: 2;">
                     <li><strong>KM:</strong> {{ coche.kilometraje }}</li>
-                    <li><strong>Garantía:</strong> 24 meses</li>
+                    <li><strong>Garantía:</strong> 24 meses Premium</li>
                 </ul>
-                <button class="btn" onclick="abrirModal()" style="width: 100%; margin-top: 40px;">CONTACTAR ASESOR</button>
+                <button class="btn-contactar" onclick="abrirModal()">CONTACTAR ASESOR</button>
             </div>
         </div>
     </div>
+
     <div id="modalContacto" class="modal-overlay">
         <div class="modal-content">
-            <h4>CONTACTO</h4>
-            <p>📞 +34 622 45 81 90</p>
-            <p>📧 info@anticongelantes.es</p>
-            <button class="btn" onclick="cerrarModal()" style="background: #ff4d4d;">CERRAR</button>
+            <h3 style="color: #00ff88">CONTACTO</h3>
+            <p style="font-size: 20px; margin: 15px 0;">📞 +34 622 45 81 90</p>
+            <p style="opacity: 0.8">info@anticongelantes.es</p>
+            <button class="btn" onclick="cerrarModal()" style="background: #ff4d4d; margin-top: 20px; padding: 10px 20px;">CERRAR</button>
         </div>
     </div>
+
     <script>
         function abrirModal() { document.getElementById('modalContacto').style.display = 'flex'; }
         function cerrarModal() { document.getElementById('modalContacto').style.display = 'none'; }

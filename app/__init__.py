@@ -2,8 +2,10 @@ import os.path
 import os
 import sqlite3
 
+
 from flask import Flask
 
+from app.controller.ui.manage_users_controller import manage_users_blueprint
 from app.controller.ui.equipos_controller import equipos_blueprint
 from app.controller.ui.pokemon_controller import pokemon_blueprint
 
@@ -45,6 +47,8 @@ def create_app():
 
     # Crear conexión a la base de datos
     db = SGBD()
+
+    app.register_blueprint(manage_users_blueprint(db))
 
     # Funcionalidades Iker
     app.register_blueprint(home_blueprint())

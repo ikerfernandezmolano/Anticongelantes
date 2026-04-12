@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for
 from app.controller.model.changelog_controller import ChangelogController
 # Importamos la clase Sesion personalizada para gestionar quién está conectado
 from app.controller.model.Sesion import Sesion
+from app.controller.model.GestorUsuarios import GestorUsuarios
 
 def changelog_blueprint(db):
     # Creamos el Blueprint para agrupar las rutas relacionadas con el historial
@@ -9,6 +10,7 @@ def changelog_blueprint(db):
     
     # Instanciamos el controlador que contiene la lógica de base de datos
     model = ChangelogController(db) 
+    gestor_usuarios = GestorUsuarios(db)
 
     @bp.route("/changelog", methods=["GET", "POST"])
     def ver_changelog():
@@ -32,9 +34,13 @@ def changelog_blueprint(db):
             # En caso de cualquier error leyendo la sesión, aseguramos el funcionamiento con el usuario 1
             usuario_actual_id = 1
         
-        # --- NUEVO: DETERMINAMOS SI ES ADMIN ---
-        # Si el ID es 1, es el admin. Esto activará el botón en el HTML.
-        soy_el_admin = (usuario_actual_id == 1)
+        # --- ACTUALIZADO: DETERMINAMOS SI ES ADMIN ---
+        # Buscamos en la base de datos si el Estado del usuario es 'Admin'
+        try:
+            usuario_info = gestor_usuarios.get_usuario(usuario_actual_id)
+            soy_el_admin = (usuario_info.get("Estado") == "Admin")
+        except:
+            soy_el_admin = False
         # ---------------------------------------
 
         mensajes = []

@@ -94,6 +94,9 @@
 </head>
 <body class="background">
     <div class="nav-header">
+        {% if usuario.Estado == 'Admin' %}
+            <a href="/manage_users" style="background-color: #28a745; color: white; padding: 5px 10px; text-decoration: none; border-radius: 5px; font-weight: bold; margin-right: 10px;">⚙️ Panel de Administrador</a>
+        {% endif %}
         <span>Bienvenido, <strong>{{ usuario.Nombre }}</strong></span> |
         <a href="/logout" style="color: #ff4d4d; text-decoration: none; font-weight: bold;">Cerrar Sesión</a>
     </div>

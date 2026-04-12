@@ -41,14 +41,10 @@ def car_blueprint(db):
     # DETALLES DEL COCHE
     @bp.route('/detalles/<int:id_coche>')
     def detalles_coche(id_coche):
-        # 1. Cambiado @app por @bp
-        # 2. Usamos el servicio para buscar el coche específico
         todos = model.get_all()
         coche = next((c for c in todos if c['idCoche'] == id_coche), None)
-
         if not coche:
             return "Vehículo no encontrado", 404
-
         return render_template('detalles.html', coche=coche, usuario=Sesion().getSession())
 
     return bp

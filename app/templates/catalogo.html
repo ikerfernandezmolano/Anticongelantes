@@ -93,7 +93,7 @@
 
 <div class="nav-header">
     {% if usuario and usuario.Estado == 'Admin' %}
-        <a href="/gestionUsuarios" style="background:#28a745; padding:8px 15px; border-radius:10px; color:white; text-decoration:none; font-weight:bold; margin-right:10px;">
+        <a href="/admin_panel" style="background:#28a745; padding:8px 15px; border-radius:10px; color:white; text-decoration:none; font-weight:bold; margin-right:10px;">
             PANEL ADMIN
         </a>
     {% endif %}
@@ -121,13 +121,6 @@
                 onclick="window.location.href='/detalles/{{ coche['idCoche'] }}'">
                 VER DETALLES
             </button>
-
-            {% if usuario and usuario.Estado == 'Admin' %}
-            <button class="btn" style="background:#ff4d4d; margin-top:10px; width:100%; font-weight:bold;"
-                onclick="if(confirm('¿Seguro que quieres eliminar este coche?')) window.location.href='/delete_car/{{ coche['idCoche'] }}'">
-                ELIMINAR
-            </button>
-            {% endif %}
         </div>
         {% endfor %}
     </div>

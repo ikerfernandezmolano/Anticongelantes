@@ -14,3 +14,19 @@ class CarModel:
     def delete_car(self, idCoche):
         query = "DELETE FROM Coche WHERE idCoche = ?"
         self.db.executeSQL(query, (idCoche,))
+
+    def update_car(self, idCoche, marca, modelo, precio, kilometraje, imagen):
+        """
+        Actualiza la información de un vehículo existente en el catálogo.
+        """
+        sql = """
+            UPDATE Coche
+            SET marca = ?, modelo = ?, precio = ?, kilometraje = ?, imagen = ?
+            WHERE idCoche = ?
+        """
+        try:
+            self.db.executeSQL(sql, (marca, modelo, precio, kilometraje, imagen, idCoche))
+            return True
+        except Exception as e:
+            print(f"[ERROR - CarModel] Error al actualizar el coche: {e}")
+            return False

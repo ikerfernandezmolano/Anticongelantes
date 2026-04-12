@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Añadir Nuevo Coche</title>
+    <title>Editar Coche</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='manageUsers.css') }}">
     <style>
         .pokedex-main-container { height: auto !important; max-height: 80vh; overflow-y: auto; padding-top: 30px !important; }
@@ -27,38 +27,38 @@
             <h1>PANEL DE ADMINISTRADOR</h1>
         </div>
         <div class="top-right">
-            <h1>AÑADIR COCHE</h1>
+            <h1>EDITAR COCHE</h1>
         </div>
     </div>
 
     <!-- Contenedor principal -->
     <div class="pokedex-main-container" style="flex-direction: column; justify-content: flex-start; align-items: center;">
-        <h2>Introduce los datos del nuevo vehículo</h2>
+        <h2>Modifica los datos del vehículo</h2>
         
-        <form action="/add_car" method="POST" class="form-container" enctype="multipart/form-data">
+        <form action="/edit_car/{{ coche.idCoche }}" method="POST" class="form-container" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="marca">Marca:</label>
-                <input type="text" id="marca" name="marca" required placeholder="Ej. Toyota">
+                <input type="text" id="marca" name="marca" required value="{{ coche.marca }}">
             </div>
             <div class="form-group">
                 <label for="modelo">Modelo:</label>
-                <input type="text" id="modelo" name="modelo" required placeholder="Ej. Corolla">
+                <input type="text" id="modelo" name="modelo" required value="{{ coche.modelo }}">
             </div>
             <div class="form-group">
                 <label for="precio">Precio (€):</label>
-                <input type="number" id="precio" name="precio" required placeholder="Ej. 15000" step="0.01">
+                <input type="number" id="precio" name="precio" required value="{{ '{:.2f}'.format(coche.precio) }}" step="0.01">
             </div>
             <div class="form-group">
                 <label for="kilometraje">Kilometraje (km):</label>
-                <input type="number" id="kilometraje" name="kilometraje" required placeholder="Ej. 50000">
+                <input type="number" id="kilometraje" name="kilometraje" required value="{{ coche.kilometraje }}">
             </div>
             <div class="form-group">
-                <label for="imagen">Subir imagen:</label>
-                <input type="file" id="imagen" name="imagen" accept="image/*" required style="padding: 5px 10px !important;">
+                <label for="imagen">Cambiar imagen (opcional):</label>
+                <input type="file" id="imagen" name="imagen" accept="image/*" style="padding: 5px 10px !important;">
             </div>
             
             <div class="Botones" style="margin-top: 20px;">
-                <button type="submit" class="btn">Guardar Coche</button>
+                <button type="submit" class="btn">Guardar Cambios</button>
             </div>
         </form>
     </div>

@@ -2,16 +2,60 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Gestión de Usuarios - PimPam</title>
+    <title>Gestión de Usuarios - Anticongelantes</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='manageUsers.css') }}">
+    <style>
+        /* Estilos modernos inyectados para mejorar la vista */
+        .pokedex-main-container { height: 75vh !important; display: flex; overflow: hidden; background: white; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
+        .pokedex-left-panel, .pokedex-right-panel { flex: 1; padding: 30px !important; overflow-y: auto; background: transparent; }
+        .pokedex-left-panel { border-right: 2px dashed #eee; }
+        
+        .panel-title { font-family: 'Roboto Condensed', sans-serif; font-size: 24px; color: #333; margin-bottom: 25px; text-align: center; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px; }
+
+        .usuario-row {
+            background: #fdfdfd !important;
+            border: 1px solid #e9ecef !important;
+            border-radius: 12px !important;
+            padding: 15px !important;
+            margin-bottom: 15px !important;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .usuario-row:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.06);
+            background: #ffffff !important;
+            border-color: #d1d7db !important;
+        }
+        .usuario-sprite { background: #f4f4f4; border-radius: 50%; width: 65px; height: 65px; display: flex; align-items: center; justify-content: center; font-size: 38px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); }
+        .usuario-info { flex-grow: 1; margin-left: 15px; text-align: left; }
+        .usuario-nombre { font-size: 18px !important; font-weight: bold; color: #222 !important; margin: 0 0 5px 0 !important; font-family: 'Roboto Condensed', sans-serif; }
+        .usuario-favorito { font-size: 13px !important; color: #666 !important; margin: 0 !important; background: #eee; padding: 4px 10px; border-radius: 12px; display: inline-block; font-family: sans-serif; }
+        
+        /* Botones de Acción */
+        .usuario-actions { display: flex; gap: 8px; }
+        .action-btn {
+            background: white; border: 1px solid #ccc; border-radius: 8px; width: 42px; height: 42px; padding: 0;
+            cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; font-size: 22px; line-height: 1;
+        }
+        .action-btn:hover { background: #f0f0f0; transform: scale(1.05); }
+        .action-btn.edit:hover { border-color: #ffc107; background: #fffdf0; }
+        .action-btn.accept:hover { border-color: #28a745; background: #f0fff4; }
+        .action-btn.reject:hover { border-color: #dc3545; background: #fff0f0; }
+        .action-btn.wait:hover { border-color: #fd7e14; background: #fff3e6; }
+        .action-btn.admin:hover { border-color: #8a2be2; background: #f4e8ff; }
+        .action-btn img { width: 22px; height: 22px; }
+    </style>
 </head>
 <body class="background">
-    <a href="/pokedex">
+    <a href="/admin_panel">
         <img src="{{ url_for('static', filename='return.png') }}" class="flecha">
     </a>
     <div class="top-bar">
         <div class="top-left">
-            <h1>ACEPTADOS</h1>
+            <h1>PANEL DE ADMINISTRADOR</h1>
         </div>
 
         <div class="top-right">
@@ -20,48 +64,74 @@
     </div>
     <div class="pokedex-main-container">
         <div class="pokedex-left-panel">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px; margin-bottom: 25px;">
+                <h2 class="panel-title" style="border: none; margin: 0; padding: 0;">USUARIOS ACEPTADOS <span style="color:#28a745;">({{ usuarios1|length }})</span></h2>
+                <button onclick="abrirModalCrear()" style="background:#28a745; color: white; padding: 8px 15px; border-radius: 8px; font-weight: bold; font-family: 'Roboto Condensed', sans-serif; border: none; cursor: pointer; transition: transform 0.2s;">
+                    + CREAR
+                </button>
+            </div>
             {% for u in usuarios1 %}
             <div class="usuario-row">
                 <!-- Sprite a la izquierda -->
                 <div class="usuario-sprite">
-                    <img src="{{ url_for('static', filename='sprites/pokemon_' ~ u['IDFavorito'] ~ '.png') }}" alt="Sprite">
+                    👤
                 </div>
 
                 <!-- Datos del usuario -->
                 <div class="usuario-info">
-                    <p class="usuario-nombre">{{ u['Nombre'] }}</p>
-                    <p class="usuario-favorito">Pokemon Favorito: {{ u['IDFavorito'] }}</p>
+                    <p class="usuario-nombre">{{ u['Nombre'] }} {% if u['Estado'] == 'Admin' %}<span style="background: #007bff; color: white; font-size: 12px; padding: 2px 6px; border-radius: 4px; vertical-align: middle; margin-left: 5px;">ADMIN</span>{% endif %}</p>
+                    <p class="usuario-favorito">{{ u['Email'] }}</p>
                 </div>
 
                 <!-- Botones a la derecha -->
                 <div class="usuario-actions">
-                    <a href="/modificarDatosAdmin?id={{u['IDUsuario']}}">
-                        <img src="{{ url_for('static', filename='lapiz.png') }}" class="lapiz">
+                    <a href="/modificarDatosAdmin?id={{u['IDUsuario']}}" class="action-btn edit" title="Editar Usuario">
+                        <img src="{{ url_for('static', filename='lapiz.png') }}" alt="Editar">
                     </a>
+                    {% if u['Estado'] != 'Admin' %}
+                    <form method="post" style="display:inline;">
+                        <input type="hidden" name="accion" value="espera">
+                        <input type="hidden" name="user_id" value="{{ u['IDUsuario'] }}">
+                        <button type="submit" class="action-btn wait" title="Mandar a Espera">
+                            ⏳
+                        </button>
+                    </form>
+                    <form method="post" style="display:inline;">
+                        <input type="hidden" name="accion" value="hacer_admin">
+                        <input type="hidden" name="user_id" value="{{ u['IDUsuario'] }}">
+                        <button type="submit" class="action-btn admin" title="Hacer Administrador">
+                            👑
+                        </button>
+                    </form>
+                    {% endif %}
+                    
+                    {% if u['Estado'] != 'Admin' or u['IDUsuario'] == current_user_id %}
                     <form method="post" style="display:inline;">
                         <input type="hidden" name="accion" value="rechazar">
                         <input type="hidden" name="user_id" value="{{ u['IDUsuario'] }}">
-                        <button type="submit" style="background:none; border:none; padding:0;">
-                            <img src="{{ url_for('static', filename='rojo.png') }}" class="rojo">
+                        <button type="submit" class="action-btn reject" title="Rechazar/Eliminar Usuario">
+                            <img src="{{ url_for('static', filename='rojo.png') }}" alt="Rechazar">
                         </button>
                     </form>
+                    {% endif %}
                 </div>
             </div>
             {% endfor %}
         </div>
 
         <div class="pokedex-right-panel">
+            <h2 class="panel-title">SOLICITUDES EN ESPERA <span style="color:#ffc107;">({{ usuarios2|length }})</span></h2>
             {% for u in usuarios2 %}
             <div class="usuario-row">
                 <!-- Sprite a la izquierda -->
                 <div class="usuario-sprite">
-                    <img src="{{ url_for('static', filename='sprites/pokemon_' ~ u['IDFavorito'] ~ '.png') }}" alt="Sprite">
+                    👤
                 </div>
 
                 <!-- Datos del usuario -->
                 <div class="usuario-info">
                     <p class="usuario-nombre">{{ u['Nombre'] }}</p>
-                    <p class="usuario-favorito">Pokemon Favorito: {{ u['IDFavorito'] }}</p>
+                    <p class="usuario-favorito">{{ u['Email'] }}</p>
                 </div>
 
                 <!-- Botones a la derecha -->
@@ -69,15 +139,15 @@
                     <form method="post" style="display:inline;">
                         <input type="hidden" name="accion" value="aceptar">
                         <input type="hidden" name="user_id" value="{{ u['IDUsuario'] }}">
-                        <button type="submit" style="background:none; border:none; padding:0;">
-                            <img src="{{ url_for('static', filename='verde.png') }}" class="lapiz">
+                        <button type="submit" class="action-btn accept" title="Aceptar Usuario">
+                            <img src="{{ url_for('static', filename='verde.png') }}" alt="Aceptar">
                         </button>
                     </form>
                     <form method="post" style="display:inline;">
                         <input type="hidden" name="accion" value="eliminar">
                         <input type="hidden" name="user_id" value="{{ u['IDUsuario'] }}">
-                        <button type="submit" style="background:none; border:none; padding:0;">
-                            <img src="{{ url_for('static', filename='rojo.png') }}" class="rojo">
+                        <button type="submit" class="action-btn reject" title="Rechazar Usuario">
+                            <img src="{{ url_for('static', filename='rojo.png') }}" alt="Rechazar">
                         </button>
                     </form>
                 </div>
@@ -85,5 +155,27 @@
             {% endfor %}
         </div>
     </div>
+
+    <!-- Modal para crear usuario -->
+    <div id="modalCrearUsuario" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px);">
+        <div style="background: white; padding: 30px; border-radius: 20px; width: 350px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.2);">
+            <h2 style="font-family: 'Roboto Condensed', sans-serif; margin-top: 0; color: #333;">NUEVO USUARIO</h2>
+            <form method="POST" style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
+                <input type="hidden" name="accion" value="crear_usuario">
+                <input type="text" name="nombre" placeholder="Nombre de usuario" required style="padding: 12px; border-radius: 8px; border: 1px solid #ccc; width: 100%; box-sizing: border-box; font-size: 16px;">
+                <input type="email" name="email" placeholder="Correo electrónico" required style="padding: 12px; border-radius: 8px; border: 1px solid #ccc; width: 100%; box-sizing: border-box; font-size: 16px;">
+                <input type="password" name="password" placeholder="Contraseña" required style="padding: 12px; border-radius: 8px; border: 1px solid #ccc; width: 100%; box-sizing: border-box; font-size: 16px;">
+                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                    <button type="button" onclick="cerrarModalCrear()" style="flex: 1; padding: 12px; border-radius: 8px; border: none; background: #dc3545; color: white; font-weight: bold; cursor: pointer; transition: 0.2s;">CANCELAR</button>
+                    <button type="submit" style="flex: 1; padding: 12px; border-radius: 8px; border: none; background: #28a745; color: white; font-weight: bold; cursor: pointer; transition: 0.2s;">GUARDAR</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function abrirModalCrear() { document.getElementById('modalCrearUsuario').style.display = 'flex'; }
+        function cerrarModalCrear() { document.getElementById('modalCrearUsuario').style.display = 'none'; }
+    </script>
 </body>
 </html>

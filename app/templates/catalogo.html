@@ -6,7 +6,10 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='signin-reg.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
     <style>
-        /* Contenedor para centrar todo el contenido verticalmente */
+        body {
+            margin: 0;
+        }
+
         .main-wrapper {
             display: flex;
             flex-direction: column;
@@ -15,11 +18,7 @@
             min-height: 100vh;
             padding-top: 120px;
         }
-        .catalogo-container {
-            margin-top: 30px;
-}
 
-        /* Estilo para el título centrado arriba */
         .titulo-catalogo {
             font-family: 'Roboto Condensed', sans-serif;
             font-size: 60px;
@@ -31,7 +30,6 @@
             text-transform: uppercase;
         }
 
-        /* Cuadrícula de coches centrada */
         .catalogo-container {
             display: flex;
             flex-wrap: wrap;
@@ -40,43 +38,31 @@
             width: 95%;
             max-width: 1400px;
             padding-bottom: 50px;
+            margin-top: 30px;
         }
 
-        /* Tarjetas con efecto cristal mejorado */
         .car-card {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 25px;
             padding: 25px;
             width: 350px;
             text-align: center;
             color: white;
-            transition: transform 0.3s ease, background 0.3s ease;
             box-shadow: 0 15px 35px rgba(0,0,0,0.5);
         }
 
-        .car-card:hover {
-            transform: translateY(-10px);
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-
-        /* Ajuste para que las fotos se vean perfectas */
         .car-img {
             width: 100%;
             height: 200px;
-            object-fit: contain; /* Evita que las fotos de los coches se corten */
+            object-fit: contain;
             border-radius: 15px;
             margin-bottom: 20px;
-            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
         }
 
         .car-price {
             font-size: 28px;
-            color: #f2f2f2;
             font-weight: bold;
-            margin: 15px 0 5px 0;
         }
 
         .car-info {
@@ -85,7 +71,6 @@
             margin-bottom: 20px;
         }
 
-        /* Cabecera de usuario arriba a la derecha */
         .nav-header {
             position: fixed;
             top: 20px;
@@ -95,41 +80,57 @@
         }
     </style>
 </head>
+
 <body class="background">
-    <div class="nav-header">
-        {% if usuario.Estado == 'Admin' %}
-            <a href="/manage_users" style="background-color: #28a745; color: white; padding: 5px 10px; text-decoration: none; border-radius: 5px; font-weight: bold; margin-right: 10px;">⚙️ Panel de Administrador</a>
-        {% endif %}
-        <span>Bienvenido, <strong>{{ usuario.Nombre }}</strong></span> |
-        <a href="/logout" style="color: #ff4d4d; text-decoration: none; font-weight: bold;">Cerrar Sesión</a>
-    </div>
 
-    <div class="main-wrapper">
-        <h1 class="titulo-catalogo">Catálogo de Vehículos</h1>
-        {% if usuario.Estado == 'Admin' %}
-            <a href="/add_car"
-                style="margin-bottom: 30px; background-color: #28a745; padding: 10px 20px; color: white; text-decoration: none; border-radius: 10px; font-weight: bold;">
-                + Añadir coche
-            </a>
-        {% endif %}
-        <div class="catalogo-container">
-            {% for coche in coches %}
-            <div class="car-card">
-                <img src="{{ url_for('static', filename=coche['imagen']) }}"
-                     alt="{{ coche['modelo'] }}" class="car-img"
-                     onerror="this.src='/static/fondo.jpg'"> <h2 style="margin: 0;">{{ coche['marca'] }}</h2>
-                <p style="opacity: 0.8; font-style: italic;">{{ coche['modelo'] }}</p>
+<div class="nav-header">
+    {% if usuario and usuario.Estado == 'Admin' %}
+        <a href="/manage_users" style="background:#28a745; padding:5px 10px; border-radius:5px; color:white;">
+            Panel
+        </a>
+    {% endif %}
+    <span>Bienvenido {{ usuario.Nombre }}</span> |
+    <a href="/logout" style="color:red;">Cerrar Sesión</a>
+</div>
 
-                <div class="car-price">{{ "{:,.0f}".format(coche['precio']) }} €</div>
-                <div class="car-info">{{ coche['kilometraje'] }} KM</div>
+<div class="main-wrapper">
+    <h1 class="titulo-catalogo">Catálogo de Vehículos</h1>
 
-                <button class="btn" style="width: 100%; font-weight: bold;"
-                        onclick="window.location.href='/detalles/{{ coche['idCoche'] }}'">
-                    VER DETALLES
-                </button>
-            </div>
-            {% endfor %}
+    {% if usuario and usuario.Estado == 'Admin' %}
+        <a href="/add_car" style="margin-bottom:20px; background:#28a745; padding:10px; border-radius:10px;">
+            + Añadir coche
+        </a>
+    {% endif %}
+
+    <div class="catalogo-container">
+        {% for coche in coches %}
+        <div class="car-card">
+
+            <img src="{{ url_for('static', filename=coche['imagen']) }}"
+                 class="car-img"
+                 onerror="this.src='/static/fondo.jpg'">
+
+            <h2>{{ coche['marca'] }}</h2>
+            <p>{{ coche['modelo'] }}</p>
+
+            <div class="car-price">{{ coche['precio'] }} €</div>
+            <div class="car-info">{{ coche['kilometraje'] }} KM</div>
+
+            <button class="btn" style="width:100%;"
+                onclick="window.location.href='/detalles/{{ coche['idCoche'] }}'">
+                VER DETALLES
+            </button>
+            {% if usuario and usuario.Estado == 'Admin' %}
+            <button class="btn" style="background:red; margin-top:10px; width:100%;"
+                onclick="if(confirm('¿Seguro que quieres eliminar este coche?')) window.location.href='/delete_car/{{ coche['idCoche'] }}'">
+                ELIMINAR
+            </button>
+            {% endif %}
+
         </div>
+        {% endfor %}
     </div>
+</div>
+
 </body>
 </html>

@@ -10,3 +10,7 @@ class CarModel:
             "INSERT INTO Coche (marca, modelo, precio, kilometraje, imagen) VALUES (?, ?, ?, ?, ?)",
             (marca, modelo, precio, kilometraje, imagen)
         )
+
+    def delete_car(self, idCoche):
+        query = "DELETE FROM Coche WHERE idCoche = ?"
+        self.db.executeSQL(query, (idCoche,))

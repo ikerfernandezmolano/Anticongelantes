@@ -28,4 +28,11 @@ def car_blueprint(db):
 
         return render_template("add_car.html", usuario=session.get("usuario"))
 
+
+    @bp.route("/delete_car/<int:idCoche>")
+    def delete_car(idCoche):
+        model.delete_car(idCoche)
+        return redirect(url_for("car.listar_coches"))
+
+
     return bp

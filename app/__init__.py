@@ -17,6 +17,7 @@ from app.controller.ui.ControladorVista import *
 from app.controller.ui.changelog_controller import changelog_blueprint
 from app.controller.ui.chatbot_controller import chatbot_blueprint
 
+from app.controller.ui.car_controller import car_blueprint
 
 def init_db():
     print("Iniciando la base de datos")
@@ -50,7 +51,6 @@ def create_app():
 
     app.register_blueprint(manage_users_blueprint(db))
 
-    # Funcionalidades Iker
     app.register_blueprint(home_blueprint())
     app.register_blueprint(registro_blueprint(db))
     app.register_blueprint(inicioSesion_blueprint(db))
@@ -59,7 +59,9 @@ def create_app():
     app.register_blueprint(modificarDatosAdmin_blueprint(db))
     app.register_blueprint(gestionUsuarios_blueprint(db))
 
+    #catalogo coches
     app.register_blueprint(catalogo_blueprint(db))
+    app.register_blueprint(car_blueprint(db))
 
     app.register_blueprint(equipos_blueprint(db))
     app.register_blueprint(pokemon_blueprint(db))

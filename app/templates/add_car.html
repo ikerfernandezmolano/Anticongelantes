@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Añadir coche</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+
+    <style>
+        .form-container {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(15px);
+            padding: 30px;
+            border-radius: 20px;
+            width: 400px;
+            margin: 100px auto;
+            color: white;
+            text-align: center;
+        }
+
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border: none;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: #28a745;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body class="background">
+
+<div class="form-container">
+    <h2>Añadir coche</h2>
+
+    <form method="POST">
+        <input type="text" name="marca" placeholder="Marca" required>
+        <input type="text" name="modelo" placeholder="Modelo" required>
+        <input type="number" name="precio" placeholder="Precio" required>
+        <input type="number" name="kilometraje" placeholder="Kilometraje">
+        <input type="text" name="imagen" placeholder="Imagen (ej: ferrari.jpg)">
+
+        <button type="submit">Añadir</button>
+    </form>
+</div>
+
+</body>
+</html>

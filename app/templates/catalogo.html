@@ -13,8 +13,11 @@
             align-items: center;
             width: 100%;
             min-height: 100vh;
-            padding-top: 40px;
+            padding-top: 120px;
         }
+        .catalogo-container {
+            margin-top: 30px;
+}
 
         /* Estilo para el título centrado arriba */
         .titulo-catalogo {
@@ -84,7 +87,7 @@
 
         /* Cabecera de usuario arriba a la derecha */
         .nav-header {
-            position: absolute;
+            position: fixed;
             top: 20px;
             right: 40px;
             color: white;
@@ -103,7 +106,12 @@
 
     <div class="main-wrapper">
         <h1 class="titulo-catalogo">Catálogo de Vehículos</h1>
-
+        {% if usuario.Estado == 'Admin' %}
+            <a href="/add_car"
+                style="margin-bottom: 30px; background-color: #28a745; padding: 10px 20px; color: white; text-decoration: none; border-radius: 10px; font-weight: bold;">
+                + Añadir coche
+            </a>
+        {% endif %}
         <div class="catalogo-container">
             {% for coche in coches %}
             <div class="car-card">

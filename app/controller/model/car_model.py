@@ -3,7 +3,7 @@ class CarModel:
         self.db = db
 
     def get_all(self):
-        return self.db.executeSQL("SELECT * FROM Coche").fetchall()
+        return self.db.execSQL("SELECT * FROM Coche")
 
     def add_car(self, marca, modelo, precio, kilometraje, imagen):
         self.db.executeSQL(

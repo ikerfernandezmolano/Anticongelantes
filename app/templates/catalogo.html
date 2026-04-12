@@ -6,9 +6,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='signin-reg.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
     <style>
-        body {
-            margin: 0;
-        }
+        body { margin: 0; }
 
         .main-wrapper {
             display: flex;
@@ -50,6 +48,7 @@
             text-align: center;
             color: white;
             box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .car-img {
@@ -60,9 +59,19 @@
             margin-bottom: 20px;
         }
 
+        /* Arreglo para que el nombre no se salga */
+        .car-card h2, .car-card p {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin: 5px 0;
+        }
+
         .car-price {
             font-size: 28px;
             font-weight: bold;
+            color: #00ff88;
+            margin-top: 10px;
         }
 
         .car-info {
@@ -80,53 +89,45 @@
         }
     </style>
 </head>
-
 <body class="background">
 
 <div class="nav-header">
     {% if usuario and usuario.Estado == 'Admin' %}
-        <a href="/manage_users" style="background:#28a745; padding:5px 10px; border-radius:5px; color:white;">
-            Panel
+        <a href="/gestionUsuarios" style="background:#28a745; padding:8px 15px; border-radius:10px; color:white; text-decoration:none; font-weight:bold; margin-right:10px;">
+            PANEL ADMIN
         </a>
     {% endif %}
-    <span>Bienvenido {{ usuario.Nombre }}</span> |
-    <a href="/logout" style="color:red;">Cerrar Sesión</a>
+    <span>Bienvenido, <strong>{{ usuario.Nombre }}</strong></span> |
+    <a href="/logout" style="color:#ff4d4d; text-decoration:none; font-weight:bold; margin-left:10px;">Cerrar Sesión</a>
 </div>
 
 <div class="main-wrapper">
     <h1 class="titulo-catalogo">Catálogo de Vehículos</h1>
 
-    {% if usuario and usuario.Estado == 'Admin' %}
-        <a href="/add_car" style="margin-bottom:20px; background:#28a745; padding:10px; border-radius:10px;">
-            + Añadir coche
-        </a>
-    {% endif %}
-
     <div class="catalogo-container">
         {% for coche in coches %}
         <div class="car-card">
-
             <img src="{{ url_for('static', filename=coche['imagen']) }}"
                  class="car-img"
                  onerror="this.src='/static/fondo.jpg'">
 
-            <h2>{{ coche['marca'] }}</h2>
-            <p>{{ coche['modelo'] }}</p>
+            <h2 title="{{ coche['marca'] }}">{{ coche['marca'] }}</h2>
+            <p title="{{ coche['modelo'] }}">{{ coche['modelo'] }}</p>
 
-            <div class="car-price">{{ coche['precio'] }} €</div>
+            <div class="car-price">{{ "{:,.0f}".format(coche['precio']) | replace(',', '.') }} €</div>
             <div class="car-info">{{ coche['kilometraje'] }} KM</div>
 
-            <button class="btn" style="width:100%;"
+            <button class="btn" style="width:100%; font-weight:bold;"
                 onclick="window.location.href='/detalles/{{ coche['idCoche'] }}'">
                 VER DETALLES
             </button>
+
             {% if usuario and usuario.Estado == 'Admin' %}
-            <button class="btn" style="background:red; margin-top:10px; width:100%;"
+            <button class="btn" style="background:#ff4d4d; margin-top:10px; width:100%; font-weight:bold;"
                 onclick="if(confirm('¿Seguro que quieres eliminar este coche?')) window.location.href='/delete_car/{{ coche['idCoche'] }}'">
                 ELIMINAR
             </button>
             {% endif %}
-
         </div>
         {% endfor %}
     </div>

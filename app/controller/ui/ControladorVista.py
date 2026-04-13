@@ -135,7 +135,6 @@ def amigos_blueprint(db):
 def modificarDatos_blueprint(db):
     bp = Blueprint('modifyUser', __name__)
     service = GestorUsuarios(db)
-    service2 = GestorEspecies(db)
 
     @bp.route('/modificarDatos', methods=['GET', 'POST'])
     def modificarDatos():
@@ -154,12 +153,11 @@ def modificarDatos_blueprint(db):
             elif status == 3:
                 flash("COMPLETA TODOS LOS CAMPOS", "error")
             else:
-                flash("CAMBIOS NO REALIZADOS CORRECTAMENTE", "error")
+                flash("CAMBIOS REALIZADOS CORRECTAMENTE", "success")
                 
         usuario_sesion = service.getSession() # puede ser None si nadie ha iniciado sesión
-        lista_pokemons = service2.get_all()
         mensajes = get_flashed_messages(with_categories=True)
-        return render_template('modificarDatos.html', mensajes=mensajes, usuario_sesion=usuario_sesion, lista_pokemons=lista_pokemons)
+        return render_template('modificarDatos.html', mensajes=mensajes, usuario_sesion=usuario_sesion)
 
     return bp
     

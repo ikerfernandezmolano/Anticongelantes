@@ -93,10 +93,16 @@
 
 <div class="nav-header">
     {% if usuario and usuario.Estado == 'Admin' %}
-        <a href="/gestionUsuarios" style="background:#28a745; padding:8px 15px; border-radius:10px; color:white; text-decoration:none; font-weight:bold; margin-right:10px;">
+        <a href="/admin_panel" style="background:#28a745; padding:8px 15px; border-radius:10px; color:white; text-decoration:none; font-weight:bold; margin-right:10px;">
             PANEL ADMIN
         </a>
     {% endif %}
+    {% if usuario and usuario.Estado != 'Admin' %}
+        <a href="/modificarDatos" style="background:#007bff; padding:8px 15px; border-radius:10px; color:white; text-decoration:none; font-weight:bold; margin-right:10px;">
+        MODIFICAR DATOS
+        </a>
+    {% endif %}
+
     <span>Bienvenido, <strong>{{ usuario.Nombre }}</strong></span> |
     <a href="/logout" style="color:#ff4d4d; text-decoration:none; font-weight:bold; margin-left:10px;">Cerrar Sesión</a>
 </div>

@@ -53,9 +53,6 @@ class GestorUsuarios:
             
         if usuario['Estado'] != 'Aceptado' and usuario['Estado'] != 'Admin':
             return 3
-            
-        from app.controller.model.GestorEspecies import GestorEspecies
-        ge = GestorEspecies(self.db).initialize()
         
         sesion = Sesion()
         sesion.startSession(
@@ -93,66 +90,7 @@ class GestorUsuarios:
             "Nombre": rows[0]["Nombre"],
             "Email": rows[0]["Email"],
             "Estado": rows[0]["Estado"],
-            "IDFavorito": rows[0]["IDFavorito"]
         }
-        
-#---------------------------------FRIENDS-------------------------------------#
-#------------------------------GETTERS INFO-----------------------------------#
-
-    def get_amigos(self, user_id):
-        # Devuelve una lista con los amigos del usuario pasado por parámetro
-        rows = self.db.execSQL(
-            sql = "SELECT s1.IDUsuarioSeguido FROM SEGUIDOR AS s1 INNER JOIN SEGUIDOR AS s2 ON s1.IDUsuarioSeguido = s2.IDUsuarioSeguidor WHERE s1.IDUsuarioSeguidor=? AND s2.IDUsuarioSeguido=?",
-            parameters = [user_id,user_id]
-        )
-        resultado = []
-        for r in rows:
-            resultado.append(self.get_usuario(r["IDUsuarioSeguido"]))
-
-        return resultado
-        
-    def get_noamigos(self, user_id):
-        # Devuelve una lista con los que no son amigos del usuario pasado por parámetro
-        rows = self.db.execSQL(
-            sql = "SELECT u.IDUsuario, u.Nombre, u.Email, u.Estado, u.IDFavorito FROM Usuario u WHERE u.IDUsuario <> ? AND NOT EXISTS (SELECT 1 FROM SEGUIDOR s WHERE s.IDUsuarioSeguidor = ? AND s.IDUsuarioSeguido = u.IDUsuario) AND NOT EXISTS (SELECT 1 FROM SEGUIDOR s WHERE s.IDUsuarioSeguidor = u.IDUsuario AND s.IDUsuarioSeguido = ?)",
-            parameters = [user_id,user_id,user_id]
-        )
-
-        return [ dict(row) for row in rows ]
-        
-    def get_solicitud(self, user_id):
-        # Devuelve una lista con los usuarios que sigue, pero no le siguen
-        rows = self.db.execSQL(
-            sql="SELECT u.IDUsuario, u.Nombre, u.Email, u.Estado, u.IDFavorito FROM Usuario u INNER JOIN SEGUIDOR s1 ON s1.IDUsuarioSeguido = u.IDUsuario WHERE s1.IDUsuarioSeguidor = ? AND NOT EXISTS (SELECT 1 FROM SEGUIDOR s2 WHERE s2.IDUsuarioSeguidor = u.IDUsuario AND s2.IDUsuarioSeguido = ?)",
-            parameters=[user_id, user_id]
-        )
-
-        return [dict(row) for row in rows]
-        
-    def get_esperandoamigo(self, user_id):
-        # Devuelve una lista con los usuarios que le siguen, pero no sigue
-        rows = self.db.execSQL(
-            sql="SELECT u.IDUsuario, u.Nombre, u.Email, u.Estado, u.IDFavorito FROM Usuario u INNER JOIN SEGUIDOR s1 ON s1.IDUsuarioSeguidor = u.IDUsuario WHERE s1.IDUsuarioSeguido = ? AND NOT EXISTS (SELECT 1 FROM SEGUIDOR s2 WHERE s2.IDUsuarioSeguidor = ? AND s2.IDUsuarioSeguido = u.IDUsuario)",
-            parameters=[user_id, user_id]
-        )
-
-        return [dict(row) for row in rows]
-        
-#-----------------------------GESTIÓN AMIGOS----------------------------------#
-
-    def dejarseguir(self, ses_id, user_id):
-        # Elimina la relación que establece que el usuario de la sesión sigue al usuario pasado por parámetro
-        self.db.executeSQL(
-            sql = "DELETE FROM SEGUIDOR WHERE IDUsuarioSeguidor=? AND IDUsuarioSeguido=?",
-            parameters=[ses_id,user_id]
-        )
-    
-    def seguir(self, ses_id, user_id):
-        # Crea la relación que establece que el usuario de la sesión sigue al usuario pasado por parámetro
-        self.db.executeSQL(
-            sql = "INSERT INTO SEGUIDOR VALUES(?,?)",
-            parameters = [user_id,ses_id]
-        )
         
 #------------------------------MANAGE USERS-----------------------------------#
 #-----------------------------GETTERS MANAGE----------------------------------#

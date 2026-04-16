@@ -1,7 +1,7 @@
 from flask import Blueprint, request, redirect, render_template, flash, url_for
 from app.controller.model.GestorUsuarios import GestorUsuarios
-from app.controller.model.GestorEspecies import GestorEspecies
 from app.controller.model.GestorCoches import GestorCoches
+from app.controller.model.Sesion import Sesion
 from flask import get_flashed_messages
 
 def home_blueprint():
@@ -20,14 +20,12 @@ def home_blueprint():
 def db_blueprint(db):
     bp = Blueprint('db', __name__)
     service = GestorUsuarios(db)
-    service2 = GestorEspecies(db)
 
     @bp.route('/db')
     def bd():
         users = service.get_all()
         usuario_sesion = service.getSession()  # puede ser None si nadie ha iniciado sesión
-        especies = service2.get_all()
-        return render_template('db.html', usuarios=users, usuario_sesion=usuario_sesion, especies=especies)
+        return render_template('db.html', usuarios=users, usuario_sesion=usuario_sesion)
 
     return bp
 
@@ -98,38 +96,22 @@ def catalogo_blueprint(db):
         # Si no hay sesión, protegemos la ruta mandando al login
         if not usuario_sesion or usuario_sesion['IDUsuario'] == 0:
             return redirect(url_for('inicioSesion.iniciarSesion'))
-
         lista_vehiculos = service.get_all()
         return render_template('catalogo.html', coches=lista_vehiculos, usuario=usuario_sesion)
+        
+    # ADMIN
+    @bp.route("/admin_panel")
+    def admin_panel():
+        usuario_sesion = service_user.getSession()
+        # Si no hay sesión, protegemos la ruta mandando al login
+        if not usuario_sesion or usuario_sesion['IDUsuario'] == 0:
+            return redirect(url_for('inicioSesion.iniciarSesion'))
+        # Si no es admin
+        if usuario_sesion.get('Estado') != 'Admin':
+            return redirect(url_for("catalogo.html", coches=lista_vehiculos, usuario=usuario_sesion))
+        lista_vehiculos = service.get_all()
+        return redirect(url_for("admin_panel"))
 
-    return bp
-
-
-def amigos_blueprint(db):
-    bp = Blueprint('amigos', __name__)
-    service = GestorUsuarios(db)
-
-    @bp.route('/amigos', methods=['GET', 'POST'])
-    def amigos():
-        sesion = service.getSession()
-        if request.method == 'POST':
-            user_id = request.form.get('user_id')
-            accion = request.form.get('accion')
-
-            if accion == 'dejarseguir':
-                service.dejarseguir(sesion['IDUsuario'],user_id)
-            elif accion == 'seguir':
-                service.seguir(sesion['IDUsuario'],user_id)
-
-            # Redirige a la misma página para recargar la lista
-            return redirect(url_for('amigos.amigos'))
-
-            # GET: mostramos usuarios
-        usuarios1 = service.get_amigos(sesion['IDUsuario'])
-        usuarios2 = service.get_solicitud(sesion['IDUsuario'])
-        usuarios3 = service.get_noamigos(sesion['IDUsuario'])
-        usuarios4 = service.get_esperandoamigo(sesion['IDUsuario'])
-        return render_template('amigos.html', usuarios1=usuarios1, usuarios2=usuarios2, usuarios3=usuarios3, usuarios4=usuarios4)
     return bp
     
 def modificarDatos_blueprint(db):
@@ -164,7 +146,6 @@ def modificarDatos_blueprint(db):
 def modificarDatosAdmin_blueprint(db):
     bp = Blueprint('modifyUserAdmin', __name__)
     service = GestorUsuarios(db)
-    service2 = GestorEspecies(db)
     
     @bp.route('/modificarDatosAdmin', methods=['GET', 'POST'])
     def modificarDatosAdmin():
@@ -200,9 +181,8 @@ def modificarDatosAdmin_blueprint(db):
 
             # Ahora puedes usar user_id para buscar el usuario en la base de datos
             usuario = service.get_usuario(user_id)  # ejemplo de función de tu servicio
-            lista_pokemons = service2.get_all()
             mensajes = get_flashed_messages(with_categories=True)
-            return render_template('modificarDatosAdmin.html', usuario=usuario, lista_pokemons=lista_pokemons, mensajes=mensajes)
+            return render_template('modificarDatosAdmin.html', usuario=usuario, mensajes=mensajes)
     
     return bp
     

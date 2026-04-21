@@ -55,13 +55,6 @@
                 </button>
             </form>
             {% endif %}
-
-            {% if usuario and usuario.Estado == 'Admin' %}
-            <button class="btn" style="background:#ff4d4d; margin-top:10px; width:100%; font-weight:bold;"
-                onclick="if(confirm('¿Seguro que quieres eliminar este coche?')) window.location.href='/delete_car/{{ coche['idCoche'] }}'">
-                ELIMINAR
-            </button>
-            {% endif %}
         </div>
         {% endfor %}
     </div>

@@ -194,6 +194,9 @@ class GestorUsuarios:
                 return str(e)
         else:
             return 2
-        
-        
-        
+
+    #---PARA CERRAR SESION
+    def cerrarSesion(self):
+        # Esto limpia los datos de la sesión actual
+        from flask import session
+        session.clear()

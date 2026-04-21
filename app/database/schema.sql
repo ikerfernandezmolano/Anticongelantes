@@ -15,6 +15,13 @@ CREATE TABLE IF NOT EXISTS Coche (
     kilometraje INTEGER,
     imagen TEXT DEFAULT 'fondo.jpg'
 );
+CREATE TABLE IF NOT EXISTS Favorito (
+    IDUsuario INTEGER NOT NULL,
+    idCoche INTEGER NOT NULL,
+    PRIMARY KEY (IDUsuario, idCoche),
+    FOREIGN KEY (IDUsuario) REFERENCES Usuario(IDUsuario) ON DELETE CASCADE,
+    FOREIGN KEY (idCoche) REFERENCES Coche(idCoche) ON DELETE CASCADE
+);
 
 INSERT OR IGNORE INTO Coche (idCoche, marca, modelo, precio, kilometraje, imagen) VALUES
 (1, 'Ferrari', '458 Italia', 215000, 12000, 'ferrari.png'),

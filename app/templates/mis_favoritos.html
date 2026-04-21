@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Catálogo - Anticongelantes</title>
+    <title>Mis Favoritos - Anticongelantes</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='signin-reg.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
     <style>
@@ -59,7 +59,6 @@
             margin-bottom: 20px;
         }
 
-        /* Arreglo para que el nombre no se salga */
         .car-card h2, .car-card p {
             white-space: nowrap;
             overflow: hidden;
@@ -90,16 +89,11 @@
     </style>
 </head>
 <body class="background">
-<div class="nav-header">
-    {% if usuario and usuario.Estado == 'Admin' %}
-        <a href="/admin_panel" style="background:#28a745; padding:8px 15px; border-radius:10px; color:white; text-decoration:none; font-weight:bold; margin-right:10px;">
-            PANEL ADMIN
-        </a>
-    {% endif %}
 
+<div class="nav-header">
     {% if usuario and usuario.Estado != 'Admin' %}
-        <a href="{{ url_for('catalogo.mis_favoritos') }}" style="background:#1a1a1a; border: 1px solid #ff4d4d; padding:8px 15px; border-radius:10px; color:white; text-decoration:none; font-weight:bold; margin-right:10px;">
-            ❤️ MIS FAVORITOS
+        <a href="{{ url_for('catalogo.mostrar_catalogo') }}" style="background:#6c757d; padding:8px 15px; border-radius:10px; color:white; text-decoration:none; font-weight:bold; margin-right:10px;">
+            VOLVER AL CATÁLOGO
         </a>
 
         <a href="/modificarDatos" style="background:#007bff; padding:8px 15px; border-radius:10px; color:white; text-decoration:none; font-weight:bold; margin-right:10px;">
@@ -112,7 +106,7 @@
 </div>
 
 <div class="main-wrapper">
-    <h1 class="titulo-catalogo">Catálogo de Vehículos</h1>
+    <h1 class="titulo-catalogo">Mis Favoritos ❤️</h1>
 
     <div class="catalogo-container">
         {% for coche in coches %}
@@ -131,21 +125,16 @@
                 onclick="window.location.href='/detalles/{{ coche['idCoche'] }}'">
                 VER DETALLES
             </button>
-            {% if usuario and usuario.Estado != 'Admin' %}
-            <form action="{{ url_for('catalogo.añadir_a_favoritos', id_coche=coche['idCoche']) }}" method="POST">
-                <button type="submit" class="btn" style="width:100%; font-weight:bold; margin-top:10px; background: transparent; border: 1px solid #ff4d4d; color: #ff4d4d;">
-                    ❤️ GUARDAR FAVORITO
+            <form action="{{ url_for('catalogo.quitar_de_favoritos', id_coche=coche['idCoche']) }}" method="POST">
+                <button type="submit" class="btn" style="width:100%; font-weight:bold; margin-top:10px; background: #ff4d4d; border: none; color: white;">
+                    🗑️ QUITAR DE FAVORITOS
                 </button>
             </form>
-            {% endif %}
-
-            {% if usuario and usuario.Estado == 'Admin' %}
-            <button class="btn" style="background:#ff4d4d; margin-top:10px; width:100%; font-weight:bold;"
-                onclick="if(confirm('¿Seguro que quieres eliminar este coche?')) window.location.href='/delete_car/{{ coche['idCoche'] }}'">
-                ELIMINAR
-            </button>
-            {% endif %}
-        </div>
+            </div>
+        {% else %}
+            <div style="color: white; font-size: 20px; margin-top: 50px;">
+                Aún no has guardado ningún vehículo en tus favoritos.
+            </div>
         {% endfor %}
     </div>
 </div>

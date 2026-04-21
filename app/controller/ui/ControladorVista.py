@@ -82,6 +82,12 @@ def inicioSesion_blueprint(db):
         mensajes = get_flashed_messages(with_categories=True)
         return render_template('inicioSesion.html', mensajes=mensajes)
 
+    @bp.route('/logout')
+    def logout():
+        # 1. Limpiamos la sesión en el servidor
+        service.cerrarSesion()
+        # 2. Redirigimos al inicio de sesión o al home
+        return redirect(url_for('inicioSesion.iniciarSesion'))
     return bp
 
 
@@ -93,24 +99,64 @@ def catalogo_blueprint(db):
     @bp.route('/catalogo')
     def mostrar_catalogo():
         usuario_sesion = service_user.getSession()
-        # Si no hay sesión, protegemos la ruta mandando al login
         if not usuario_sesion or usuario_sesion['IDUsuario'] == 0:
             return redirect(url_for('inicioSesion.iniciarSesion'))
+
         lista_vehiculos = service.get_all()
         return render_template('catalogo.html', coches=lista_vehiculos, usuario=usuario_sesion)
-        
+
     # ADMIN
     @bp.route("/admin_panel")
     def admin_panel():
         usuario_sesion = service_user.getSession()
-        # Si no hay sesión, protegemos la ruta mandando al login
+
+        # 1. Si no hay sesión, al login
         if not usuario_sesion or usuario_sesion['IDUsuario'] == 0:
             return redirect(url_for('inicioSesion.iniciarSesion'))
-        # Si no es admin
+
+        # 2. Si NO es admin, lo mandamos de vuelta al catálogo normal
         if usuario_sesion.get('Estado') != 'Admin':
-            return redirect(url_for("catalogo.html", coches=lista_vehiculos, usuario=usuario_sesion))
+            return redirect(url_for("catalogo.mostrar_catalogo"))
         lista_vehiculos = service.get_all()
-        return redirect(url_for("admin_panel"))
+
+        return render_template("admin_panel.html", coches=lista_vehiculos, usuario=usuario_sesion)
+
+    @bp.route('/añadir_favorito/<int:id_coche>', methods=['POST'])
+    def añadir_a_favoritos(id_coche):
+        usuario_sesion = service_user.getSession()
+
+        # Si no hay sesión (ID 0 o None), lo mandamos a loguearse
+        if not usuario_sesion or usuario_sesion['IDUsuario'] == 0:
+            return redirect(url_for('inicioSesion.iniciarSesion'))
+
+        # Sacamos el ID del usuario y llamamos a la función que acabas de crear
+        id_usuario = usuario_sesion['IDUsuario']
+        service.añadir_favorito(id_usuario, id_coche)
+        # Volvemos a mostrar el catálogo
+        return redirect(url_for('catalogo.mostrar_catalogo'))
+
+    @bp.route('/mis_favoritos')
+    def mis_favoritos():
+        usuario_sesion = service_user.getSession()
+        if not usuario_sesion or usuario_sesion['IDUsuario'] == 0:
+            return redirect(url_for('inicioSesion.iniciarSesion'))
+
+        # Usamos la función que creamos antes en el GestorCoches
+        lista_favoritos = service.get_favoritos_usuario(usuario_sesion['IDUsuario'])
+
+        return render_template('mis_favoritos.html', coches=lista_favoritos, usuario=usuario_sesion)
+
+    @bp.route('/eliminar_favorito/<int:id_coche>', methods=['POST'])
+    def quitar_de_favoritos(id_coche):
+        usuario_sesion = service_user.getSession()
+        if not usuario_sesion or usuario_sesion['IDUsuario'] == 0:
+            return redirect(url_for('inicioSesion.iniciarSesion'))
+
+        id_usuario = usuario_sesion['IDUsuario']
+        service.eliminar_favorito(id_usuario, id_coche)
+
+        # Redirigimos de vuelta a la misma página de favoritos para ver el cambio
+        return redirect(url_for('catalogo.mis_favoritos'))
 
     return bp
     

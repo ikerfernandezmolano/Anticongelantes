@@ -1,160 +1,740 @@
+/* =========================
+   1. RESET GLOBAL
+========================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* =========================
+   2. BODY BASE
+========================= */
+body {
+    margin: 0;
+}
+
 body.background {
-    background-image: url("/static/fondo.png");
+    position: relative;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background:
+        linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.9)),
+        url("/static/fondo.jpg");
     background-size: cover;
     background-position: center;
-    margin: 0;
-    font-family: Arial, sans-serif;
+    background-attachment: fixed;
+
+    font-family: 'Roboto Condensed', sans-serif;
+    
+    flex-direction: column;
 }
 
-.icon {
-    width: 32px;
-    height: 32px;
-}
-
-.ball {
-    position: relative;
-    width: 120px;
-    text-align: center;
-}
-
-.ball-img {
-    width: 100px;
-}
-
-.ball span {
+/* Permitir scroll en catálogo */
+body:has(.main-wrapper) {
+    height: auto;
     display: block;
-    font-size: 12px;
-    font-weight: bold;
-}
-
-.ball.new {
-    border: none;
-    background: none;
-    cursor: pointer;
 }
 
 /* =========================
-   Estilos generales
-   ========================= */
+   3. HOME / LOGIN CONTAINER
+========================= */
+.Botones,
+.Cuerpo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
 
-body {
-    font-family: Arial, Helvetica, sans-serif;
-    background-color: #f4f6f8;
-    margin: 0;
-    padding: 20px;
+    padding: 60px 80px;
+
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+
+    animation: fadeIn 0.8s ease;
 }
-
-/* Título principal */
-h1 {
-    color: #2c3e50;
-}
-
-/* =========================
-   Navegación
-   ========================= */
-
-nav {
-    margin-bottom: 20px;
-}
-
-nav a {
-    text-decoration: none;
-    color: #3498db;
-    margin-right: 10px;
-    font-weight: bold;
-}
-
-nav a:hover {
-    text-decoration: underline;
-}
-
-/* =========================
-   Formularios
-   ========================= */
 
 form {
-    background-color: #ffffff;
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 4px;
-    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: fadeIn 0.8s ease;
 }
 
+/* =========================
+   4. TITULOS
+========================= */
+h1,
+.titulo-catalogo {
+    font-size: 65px;
+    color: white;
+    letter-spacing: 4px;
+    text-shadow: 0 10px 25px rgba(0,0,0,0.85);
+    text-align: center;
+    text-transform: uppercase;
+}
+
+/* =========================
+   5. FORMULARIOS
+========================= */
 label {
-    display: block;
-    margin-top: 10px;
+    font-size: 24px;
+    color: rgba(255,255,255,0.85);
 }
 
 input {
-    width: 100%;
-    padding: 6px;
-    margin-top: 4px;
-}
+    width: 320px;
+    padding: 14px;
 
-button {
-    margin-top: 15px;
-    padding: 8px;
-    background-color: #3498db;
-    color: white;
+    border-radius: 12px;
     border: none;
-    cursor: pointer;
+
+    background: rgba(255,255,255,0.1);
+    color: white;
+
+    font-size: 18px;
+    text-align: center;
+
+    backdrop-filter: blur(5px);
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.4);
+
+    transition: 0.3s;
 }
 
-button:hover {
-    background-color: #2980b9;
+input::placeholder {
+    color: rgba(255,255,255,0.5);
+}
+
+input:focus {
+    outline: none;
+    background: rgba(255,255,255,0.2);
+    transform: scale(1.03);
 }
 
 /* =========================
-   Listas y tablas
-   ========================= */
+   6. BOTONES
+========================= */
+.btn {
+    width: 280px;
+    padding: 15px 0;
+    
+    border: none;
+    border-radius: 12px;
 
-ul {
-    background-color: #ffffff;
-    padding: 15px;
-    border-radius: 4px;
-    max-width: 400px;
+    font-size: 20px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    position: relative;
+    overflow: hidden;
+
+    transition: 0.3s;
+
+    text-align: center;
+    text-decoration: none;
+
+    color: #222;
+
+    background: linear-gradient(
+        135deg,
+        #d9d9d9,
+        #f2f2f2,
+        #c0c0c0,
+        #ffffff
+    );
+
+    box-shadow:
+        inset 0 2px 5px rgba(255,255,255,0.8),
+        0 10px 25px rgba(0,0,0,0.4);
 }
 
-table {
-    background-color: #ffffff;
-    border-collapse: collapse;
+/* Botón secundario */
+.btn.secondary {
+    background: transparent;
+    border: 2px solid rgba(255,255,255,0.4);
+    color: white;
+}
+
+/* Hover */
+.btn:hover {
+    transform: translateY(-4px) scale(1.03);
+}
+
+.btn.secondary:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+/* Brillo */
+.btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: 0.5s;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+/* Botones en cards */
+.car-card .btn {
+    width: 100%;
+    font-size: 16px;
+}
+
+/* =========================
+   7. CATALOGO
+========================= */
+.main-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: 100%;
+    min-height: 100vh;
+
+    padding-top: 110px;
+    padding-bottom: 50px;
+}
+
+.catalogo-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    gap: 30px;
+
+    width: 95%;
+    max-width: 1400px;
+
+    margin-top: 30px;
+}
+
+/* Tarjetas */
+.car-card {
+    width: 350px;
+    padding: 25px;
+
+    border-radius: 25px;
+
+    text-align: center;
+    color: white;
+
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(15px);
+
+    border: 1px solid rgba(255,255,255,0.1);
+
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+
+    transition: 0.3s;
+}
+
+.car-card:hover {
+    transform: translateY(-10px);
+}
+
+/* Imagen */
+.car-img {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+
+    border-radius: 15px;
+    margin-bottom: 20px;
+}
+
+/* Texto truncado */
+.car-card h2,
+.car-card p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Precio */
+.car-price {
+    font-size: 28px;
+    font-weight: bold;
+    color: #00ff88;
     margin-top: 10px;
 }
 
-table th,
-table td {
-    padding: 8px 12px;
-    border: 1px solid #ccc;
-}
-
-table th {
-    background-color: #ecf0f1;
+/* Info */
+.car-info {
+    font-size: 14px;
+    opacity: 0.7;
+    margin-bottom: 20px;
 }
 
 /* =========================
-   Mensajes flash
-   ========================= */
-
-.messages {
-    list-style: none;
-    padding: 0;
-    max-width: 400px;
+   8. NAV / BOTONES EXTRA
+========================= */
+.nav-header {
+    position: fixed;
+    top: 20px;
+    right: 40px;
+    color: white;
+    z-index: 100;
 }
 
-.messages li {
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 4px;
+.back-btn {
+    position: absolute;
+    top: 25px;
+    left: 25px;
+
+    width: 55px;
+    height: 55px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 28px;
+    color: white;
+    text-decoration: none;
+
+    border-radius: 50%;
+
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(10px);
+
+    box-shadow:
+        0 10px 25px rgba(0,0,0,0.6),
+        inset 0 2px 5px rgba(255,255,255,0.2);
+
+    transition: 0.3s;
 }
 
-/* Mensaje de éxito */
-.messages .success {
-    background-color: #d4edda;
-    color: #155724;
+.back-btn:hover {
+    transform: scale(1.15);
+    background: rgba(255,255,255,0.2);
 }
 
-/* Mensaje de error */
-.messages .error {
-    background-color: #f8d7da;
-    color: #721c24;
+.back-btn:active {
+    transform: scale(0.95);
+}
+
+/* =========================
+   9. MENSAJES
+========================= */
+.message.error {
+    color: #ff4d4d;
+}
+
+.message.success {
+    color: #4dff88;
+}
+
+/* =========================
+   10. ANIMACIONES
+========================= */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* =========================
+   11. ADMIN
+========================= */
+
+.admin-main-container { 
+    display: flex;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+    height: 60vh !important;
+    width: 120vh !important;
+    overflow: hidden;
+}
+
+.admin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    width: 100%;
+    max-width: 1000px;
+    margin-top: 40px;
+    padding: 20px;
+}
+
+.admin-card {
+    background: rgba(255, 255, 255, 0.25) !important;
+    backdrop-filter: blur(12px) !important;
+    border-radius: 20px;
+    padding: 40px 30px;
+    text-align: center;
+    text-decoration: none;
+    color: #333;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.admin-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+.admin-card.users:hover { 
+    border-color: #4facfe; 
+}
+
+.admin-card.add-car:hover {
+    border-color: #43e97b; 
+}
+
+.admin-card.manage-cars:hover {
+    border-color: #fa709a; 
+}
+
+.admin-card .icon { 
+background: #848484; 
+border-radius: 50%; 
+width: 100px; 
+height: 100px; 
+display: flex; 
+align-items: center; 
+justify-content: center; 
+font-size: 55px; 
+box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); 
+}
+
+
+.admin-card h3 {
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 26px; 
+    margin: 0 0 15px 0; 
+    color: #848484; 
+}
+
+.admin-card p {
+    font-family: sans-serif;
+    font-size: 16px; 
+    color: #ccc; 
+    margin: 0; 
+    line-height: 1.5; 
+}
+
+/* =========================
+   12. DETALLES COCHE
+========================= */
+
+.detalles-container { display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+
+.info-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border-radius: 30px;
+    padding: 40px;
+    max-width: 900px;
+    width: 100%;
+    display: grid; /* Usamos Grid para control total del espacio */
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+    box-sizing: border-box;
+}
+
+.foto-detalle { width: 100%; height: auto; object-fit: contain; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.4)); }
+
+.datos-tecnicos {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0; /* Permite que el contenido se encoja si es necesario */
+}
+
+/* ARREGLO PARA EL NOMBRE: No se sale nunca */
+.datos-tecnicos h1 {
+    font-size: clamp(24px, 4vw, 45px);
+    margin: 10px 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    text-transform: uppercase;
+}
+
+.precio-grande { font-size: 40px; color: #00ff88; font-weight: bold; margin: 10px 0; }
+
+.btn-contactar {
+    width: 100%;
+    margin-top: 30px;
+    padding: 15px;
+    font-weight: bold;
+    background: #00ff88;
+    color: #1a1a1a;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.btn-contactar:hover { transform: scale(1.02); background: #00cc6e; }
+
+.modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(5px); z-index: 1000; justify-content: center; align-items: center; }
+.modal-content { background: #1a1a1a; padding: 30px; border-radius: 20px; border: 1px solid #00ff88; text-align: center; width: 320px; color: white; }
+
+/* =========================
+   13. GESTION USUARIOS
+========================= */
+
+.top-left h1,
+.top-right h1 {
+    font-size: 32px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.users-main-container {
+    display: flex;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+    height: 75vh !important;
+    overflow: hidden;
+}
+
+.top-bar {
+    height: 90px !important; /* Forzamos a que sea más baja para ganar espacio */
+    padding: 10px 80px !important;
+    width: 95%;
+    max-width: 1450px;
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-end;
+    position: relative;
+    height: 80px;
+}
+
+.top-left,
+.top-right {
+    flex: 1;
+    text-align: center;
+}
+
+.users-main-container {
+    width: 95%;
+    max-width: 1450px;
+    /* Margen superior casi nulo (5px) y el resto automático para que "sobre" abajo */
+    margin: 5px auto auto auto; 
+    padding: 30px;
+    border-radius: 30px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1); 
+    display: flex;
+    /* REPARTO 50/50 */
+    gap: 0; 
+    height: 72vh; /* Reducimos la altura para que no llegue al fondo */
+    box-sizing: border-box;
+}
+
+.users-left-panel, .users-right-panel {
+    flex: 1;
+    overflow-y: auto;
+    padding-left: 50px;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 30px;
+}
+
+.users-main-container { display: flex;background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(12px);border-radius: 20px;box-shadow: 0 20px 50px rgba(0,0,0,0.6); height: 75vh !important;overflow: hidden;}
+.users-left-panel, .users-right-panel { flex: 1; padding: 30px !important; overflow-y: auto; background: transparent; }
+.users-left-panel { border-right: 2px dashed #eee; }
+
+.panel-title { 
+font-family: 'Roboto Condensed', sans-serif; font-size: 24px; color: #333; margin-bottom: 25px; text-align: center; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px; 
+}
+
+.usuario-row {
+    background: rgba(255, 255, 255, 0.25) !important;
+    backdrop-filter: blur(12px) !important;
+    border: 1px solid #e9ecef !important;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+    border-radius: 12px !important;
+    padding: 15px !important;
+    margin-bottom: 15px !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.usuario-sprite { background: #848484; border-radius: 50%; width: 65px; height: 65px; display: flex; align-items: center; justify-content: center; font-size: 38px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); }
+.usuario-info { flex-grow: 1; margin-left: 15px; text-align: left; }
+.usuario-nombre { font-size: 18px !important; font-weight: bold; color: #222 !important; margin: 0 0 5px 0 !important; font-family: 'Roboto Condensed', sans-serif; }
+.usuario-email { font-size: 13px !important; color: #ddd !important; margin: 0 !important; background: #848484; padding: 4px 10px; border-radius: 12px; display: inline-block; font-family: sans-serif; }
+
+/* Botones de Acción */
+.usuario-actions { display: flex; gap: 8px; }
+.action-btn {
+    background: #848484; border: 1px solid #ccc; border-radius: 8px; width: 42px; height: 42px; padding: 0;
+    cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; font-size: 22px; line-height: 1;
+}
+.action-btn:hover { background: #848484; transform: scale(1.05); }
+.action-btn.edit:hover { border-color: #ffc107; background: #848484; }
+.action-btn.accept:hover { border-color: #28a745; background: #848484; }
+.action-btn.reject:hover { border-color: #dc3545; background: #848484; }
+.action-btn.wait:hover { border-color: #fd7e14; background: #848484; }
+.action-btn.admin:hover { border-color: #8a2be2; background: #848484; }
+.action-btn img { width: 22px; height: 22px; }
+
+/* =========================
+   14. GESTION COCHES
+========================= */
+
+.cars-container {
+    margin-top: 40px;
+    width: 95%;
+    max-width: 1450px;
+    margin: 10px auto;
+}
+
+.cars-page {
+    justify-content: flex-start !important;
+}
+
+.car-row {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(12px);
+    border: 1px solid #e9ecef;
+
+    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+    border-radius: 12px;
+
+    padding: 15px;
+    margin-bottom: 15px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    transition: 0.25s;
+}
+
+.car-row:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 25px 60px rgba(0,0,0,0.7);
+}
+
+/* BLOQUE IZQUIERDA (imagen + texto) */
+.car-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Imagen consistente */
+.car-img {
+    width: 320px;
+    height: 220px;
+    object-fit: cover;
+
+    border-radius: 10px;
+
+    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+}
+
+/* INFO */
+.car-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.car-title {
+    font-size: 26px;
+    font-weight: bold;
+    color: #848484;
+    margin-bottom: 5px;
+}
+
+.car-details {
+    font-size: 18px;
+    color: #ddd;
+}
+
+/* BOTONES */
+.car-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* Botón añadir */
+.add-btn {
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.cars-page {
+    padding-top: 70px;
+}
+
+/* Contenedor */
+.file-upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Ocultamos el input real */
+.file-upload input[type="file"] {
+    display: none;
+}
+
+/* Botón personalizado */
+.file-label {
+    padding: 14px 25px;
+    border-radius: 12px;
+    cursor: pointer;
+
+    font-weight: bold;
+    font-size: 16px;
+
+    color: #222;
+
+    background: linear-gradient(
+        135deg,
+        #d9d9d9,
+        #f2f2f2,
+        #c0c0c0,
+        #ffffff
+    );
+
+    box-shadow:
+        inset 0 2px 5px rgba(255,255,255,0.8),
+        0 10px 25px rgba(0,0,0,0.4);
+
+    transition: 0.3s;
+}
+
+/* Hover */
+.file-label:hover {
+    transform: translateY(-3px) scale(1.03);
+}
+
+/* Nombre del archivo */
+#file-name {
+    font-size: 14px;
+    color: #ccc;
 }

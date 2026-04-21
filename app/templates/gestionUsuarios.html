@@ -3,70 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>Gestión de Usuarios - Anticongelantes</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='manageUsers.css') }}">
-    <style>
-        /* Estilos modernos inyectados para mejorar la vista */
-        .pokedex-main-container { height: 75vh !important; display: flex; overflow: hidden; background: white; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
-        .pokedex-left-panel, .pokedex-right-panel { flex: 1; padding: 30px !important; overflow-y: auto; background: transparent; }
-        .pokedex-left-panel { border-right: 2px dashed #eee; }
-        
-        .panel-title { font-family: 'Roboto Condensed', sans-serif; font-size: 24px; color: #333; margin-bottom: 25px; text-align: center; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px; }
-
-        .usuario-row {
-            background: #fdfdfd !important;
-            border: 1px solid #e9ecef !important;
-            border-radius: 12px !important;
-            padding: 15px !important;
-            margin-bottom: 15px !important;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .usuario-row:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.06);
-            background: #ffffff !important;
-            border-color: #d1d7db !important;
-        }
-        .usuario-sprite { background: #f4f4f4; border-radius: 50%; width: 65px; height: 65px; display: flex; align-items: center; justify-content: center; font-size: 38px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); }
-        .usuario-info { flex-grow: 1; margin-left: 15px; text-align: left; }
-        .usuario-nombre { font-size: 18px !important; font-weight: bold; color: #222 !important; margin: 0 0 5px 0 !important; font-family: 'Roboto Condensed', sans-serif; }
-        .usuario-favorito { font-size: 13px !important; color: #666 !important; margin: 0 !important; background: #eee; padding: 4px 10px; border-radius: 12px; display: inline-block; font-family: sans-serif; }
-        
-        /* Botones de Acción */
-        .usuario-actions { display: flex; gap: 8px; }
-        .action-btn {
-            background: white; border: 1px solid #ccc; border-radius: 8px; width: 42px; height: 42px; padding: 0;
-            cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; font-size: 22px; line-height: 1;
-        }
-        .action-btn:hover { background: #f0f0f0; transform: scale(1.05); }
-        .action-btn.edit:hover { border-color: #ffc107; background: #fffdf0; }
-        .action-btn.accept:hover { border-color: #28a745; background: #f0fff4; }
-        .action-btn.reject:hover { border-color: #dc3545; background: #fff0f0; }
-        .action-btn.wait:hover { border-color: #fd7e14; background: #fff3e6; }
-        .action-btn.admin:hover { border-color: #8a2be2; background: #f4e8ff; }
-        .action-btn img { width: 22px; height: 22px; }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body class="background">
-    <a href="/admin_panel">
-        <img src="{{ url_for('static', filename='return.png') }}" class="flecha">
+    <a href="/admin_panel" class="back-btn">
+            ←
     </a>
     <div class="top-bar">
         <div class="top-left">
-            <h1>PANEL DE ADMINISTRADOR</h1>
+            <h1 style="text-size:32px;">PANEL DE ADMINISTRADOR</h1>
         </div>
 
         <div class="top-right">
             <h1>GESTIÓN DE USUARIOS</h1>
         </div>
     </div>
-    <div class="pokedex-main-container">
-        <div class="pokedex-left-panel">
+    <div class="users-main-container">
+        <div class="users-left-panel">
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px; margin-bottom: 25px;">
-                <h2 class="panel-title" style="border: none; margin: 0; padding: 0;">USUARIOS ACEPTADOS <span style="color:#28a745;">({{ usuarios1|length }})</span></h2>
-                <button onclick="abrirModalCrear()" style="background:#28a745; color: white; padding: 8px 15px; border-radius: 8px; font-weight: bold; font-family: 'Roboto Condensed', sans-serif; border: none; cursor: pointer; transition: transform 0.2s;">
+                <h2 class="panel-title" style="border: none; margin: 0; padding: 0; color:#848484">USUARIOS ACEPTADOS <span style="color:#28a745;">({{ usuarios1|length }})</span></h2>
+                <button class="btn" style="padding:8px 14px; width: 120px; background: linear-gradient(135deg,#28a745,#a8e6b5,#53c16a,#eefaf0);" onclick="abrirModalCrear()">
                     + CREAR
                 </button>
             </div>
@@ -80,7 +36,7 @@
                 <!-- Datos del usuario -->
                 <div class="usuario-info">
                     <p class="usuario-nombre">{{ u['Nombre'] }} {% if u['Estado'] == 'Admin' %}<span style="background: #007bff; color: white; font-size: 12px; padding: 2px 6px; border-radius: 4px; vertical-align: middle; margin-left: 5px;">ADMIN</span>{% endif %}</p>
-                    <p class="usuario-favorito">{{ u['Email'] }}</p>
+                    <p class="usuario-email">{{ u['Email'] }}</p>
                 </div>
 
                 <!-- Botones a la derecha -->
@@ -119,8 +75,8 @@
             {% endfor %}
         </div>
 
-        <div class="pokedex-right-panel">
-            <h2 class="panel-title">SOLICITUDES EN ESPERA <span style="color:#ffc107;">({{ usuarios2|length }})</span></h2>
+        <div class="users-right-panel">
+            <h2 class="panel-title" style="color:#848484">SOLICITUDES EN ESPERA <span style="color:#ffc107;">({{ usuarios2|length }})</span></h2>
             {% for u in usuarios2 %}
             <div class="usuario-row">
                 <!-- Sprite a la izquierda -->
@@ -131,7 +87,7 @@
                 <!-- Datos del usuario -->
                 <div class="usuario-info">
                     <p class="usuario-nombre">{{ u['Nombre'] }}</p>
-                    <p class="usuario-favorito">{{ u['Email'] }}</p>
+                    <p class="usuario-email">{{ u['Email'] }}</p>
                 </div>
 
                 <!-- Botones a la derecha -->

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Anticongelantes</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='signin-reg.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&display=swap" rel="stylesheet">
 </head>
@@ -16,16 +16,13 @@
       {% for category, mensaje in mensajes %}
           <label class="message {{ category }}">{{ mensaje }}</label>
       {% endfor %}
-      <form action="/registro" method="POST">
-          <div class="Cuerpo">
-              <input type="user" id="user" name="user" placeholder="USUARIO" required>
-              <input type="email" id="email" name="email" placeholder="CORREO ELECTRÓNICO" required>
-              <input type="password" id="password" name="password" placeholder="CONTRASEÑA" required>
-              <input type="password" id="confirm_password" name="confirm_password" placeholder="CONFIRMAR CONTRASEÑA" required>
-          </div>
-          <div class="Botones">
-              <button type="submit" class="btn">CONFIRMAR</button>
-          </div>
+      <form action="/registro" method="POST" style="gap: 25px;padding: 60px 80px;background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(12px);border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.6);">
+          <input type="text" name="user" placeholder="USUARIO" required>
+          <input type="email" name="email" placeholder="CORREO ELECTRÓNICO" required>
+          <input type="password" name="password" placeholder="CONTRASEÑA" required>
+          <input type="password" name="confirm_password" placeholder="CONFIRMAR CONTRASEÑA" required>
+
+          <button type="submit" class="btn">CONFIRMAR</button>
       </form>
   </div>
 </body>

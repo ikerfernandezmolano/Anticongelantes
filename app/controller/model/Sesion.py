@@ -7,7 +7,7 @@ class Sesion:
         # Implementa el patrón singleton para la sesión
         if cls._instance is None:
             cls._instance = super().__new__(cls)
-            cls._instance.usuario = Usuario(0,'','','','',0)  # Inicializa un usuario vacío
+            cls._instance.usuario = Usuario(0,'','','','')  # Inicializa un usuario vacío
         return cls._instance
 
     def startSession(self, pIDUsuario, pNombre, pEmail, pContraseña, pAREA='Espera'):
@@ -22,7 +22,13 @@ class Sesion:
 
     def cerrarSesion(self):
         # Cierra la sesión eliminando el usuario
-        self.usuario = None
+        self.usuario = Usuario(
+            pIDUsuario=0,
+            pNombre='',
+            pEmail='',
+            pContrasena='',
+            pEstado=''
+        )
     
     def getSession(self):
         # Devuelve los datos del usuario en sesión

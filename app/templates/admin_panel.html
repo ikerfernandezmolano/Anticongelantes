@@ -5,69 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Administración General</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='manageUsers.css') }}">
-    <style>
-        /* Estilos modernos para el panel de administración */
-        .pokedex-main-container { height: auto !important; min-height: 60vh; padding-bottom: 50px !important; }
-        
-        .admin-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            width: 100%;
-            max-width: 1000px;
-            margin-top: 40px;
-            padding: 20px;
-        }
-        
-        .admin-card {
-            background: #ffffff;
-            border-radius: 20px;
-            padding: 40px 30px;
-            text-align: center;
-            text-decoration: none;
-            color: #333;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .admin-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-        }
-
-        /* Colores dinámicos al hacer hover */
-        .admin-card.users:hover { border-color: #4facfe; }
-        .admin-card.add-car:hover { border-color: #43e97b; }
-        .admin-card.manage-cars:hover { border-color: #fa709a; }
-
-        .admin-card .icon { font-size: 55px; margin-bottom: 15px; }
-        .admin-card h3 { font-family: 'Roboto Condensed', sans-serif; font-size: 26px; margin: 0 0 15px 0; color: #222; }
-        .admin-card p { font-family: sans-serif; font-size: 16px; color: #666; margin: 0; line-height: 1.5; }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body class="background">
     
-    <!-- Botón para regresar al catálogo -->
-    <a href="/catalogo"> 
-        <img src="{{ url_for('static', filename='return.png') }}" class="flecha" alt="Volver atrás">
+    <a href="/catalogo" class="back-btn"> 
+        ←
     </a>
 
-    <div class="top-bar">
-        <div class="top-left">
-            <h1>PANEL DE ADMINISTRADOR</h1>
-        </div>
-        <div class="top-right">
-            <h1>MENÚ PRINCIPAL</h1>
-        </div>
-    </div>
 
     <!-- Contenedor principal -->
-    <div class="pokedex-main-container" style="flex-direction: column; justify-content: center; align-items: center;">
-        <h2 style="font-size: 40px; font-family: 'Roboto Condensed', sans-serif;">¿Qué deseas gestionar?</h2>
+    <div class="admin-main-container" style="flex-direction: column; justify-content: center; align-items: center;">
+        <h2 style="font-size: 40px; font-family: 'Roboto Condensed', sans-serif; color:#eee">¿Qué deseas gestionar?</h2>
         
         <div class="admin-grid">
             <!-- Tarjeta 1: Usuarios -->

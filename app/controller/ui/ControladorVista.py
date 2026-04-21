@@ -84,9 +84,7 @@ def inicioSesion_blueprint(db):
 
     @bp.route('/logout')
     def logout():
-        # 1. Limpiamos la sesión en el servidor
         service.cerrarSesion()
-        # 2. Redirigimos al inicio de sesión o al home
         return redirect(url_for('inicioSesion.iniciarSesion'))
     return bp
 

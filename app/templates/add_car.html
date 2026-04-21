@@ -4,63 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Añadir Nuevo Coche</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='manageUsers.css') }}">
-    <style>
-        .pokedex-main-container { height: auto !important; max-height: 80vh; overflow-y: auto; padding-top: 30px !important; }
-        .form-group { margin-bottom: 15px; text-align: left; width: 100%; max-width: 400px; }
-        .form-group label { display: block; font-size: 20px; margin-bottom: 5px; color: #333; font-family: 'Roboto Condensed', sans-serif; text-shadow: none; }
-        .form-group input { width: 100% !important; padding: 10px 15px !important; border-radius: 8px; border: 1px solid #ccc !important; font-size: 18px !important; box-sizing: border-box; box-shadow: none !important; background-color: #fff !important; text-align: left !important; margin-top: 0 !important; }
-        .form-container { display: flex; flex-direction: column; align-items: center; width: 100%; }
-        .Botones .btn { margin-top: 15px !important; font-size: 22px !important; padding: 10px 40px !important; }
-        h2 { margin-bottom: 20px !important; font-size: 30px !important; text-align: center; }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body class="background">
     
-    <!-- Botón para regresar a la gestión de coches -->
-    <a href="/manage_cars"> 
-        <img src="{{ url_for('static', filename='return.png') }}" class="flecha" alt="Volver atrás">
+   <a href="/manage_cars" class="back-btn">
+            ←
     </a>
 
-    <div class="top-bar">
-        <div class="top-left">
-            <h1>PANEL DE ADMINISTRADOR</h1>
-        </div>
-        <div class="top-right">
-            <h1>AÑADIR COCHE</h1>
-        </div>
-    </div>
+    <h1>PANEL DE ADMINISTRADOR</h1>
+    <h1>AÑADIR COCHE</h1>
 
     <!-- Contenedor principal -->
-    <div class="pokedex-main-container" style="flex-direction: column; justify-content: flex-start; align-items: center;">
-        <h2>Introduce los datos del nuevo vehículo</h2>
-        
-        <form action="/add_car" method="POST" class="form-container" enctype="multipart/form-data">
-            <div class="form-group">
-                <label for="marca">Marca:</label>
-                <input type="text" id="marca" name="marca" required placeholder="Ej. Toyota">
-            </div>
-            <div class="form-group">
-                <label for="modelo">Modelo:</label>
-                <input type="text" id="modelo" name="modelo" required placeholder="Ej. Corolla">
-            </div>
-            <div class="form-group">
-                <label for="precio">Precio (€):</label>
-                <input type="number" id="precio" name="precio" required placeholder="Ej. 15000" step="0.01">
-            </div>
-            <div class="form-group">
-                <label for="kilometraje">Kilometraje (km):</label>
-                <input type="number" id="kilometraje" name="kilometraje" required placeholder="Ej. 50000">
-            </div>
-            <div class="form-group">
-                <label for="imagen">Subir imagen:</label>
-                <input type="file" id="imagen" name="imagen" accept="image/*" required style="padding: 5px 10px !important;">
-            </div>
-            
-            <div class="Botones" style="margin-top: 20px;">
-                <button type="submit" class="btn">Guardar Coche</button>
-            </div>
-        </form>
+    <div class="Cuerpo"> 
+        <h2 style="color:#848484;">Introduce los datos del nuevo vehículo</h2>
+        <form action="/add_car" method="POST" enctype="multipart/form-data" style="gap: 25px;padding: 60px 80px;background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(12px);border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.6);">
+              <input type="text" id="marca" name="marca" required placeholder="MARCA">
+              <input type="text" id="modelo" name="modelo" required placeholder="MODELO">
+              <input type="number" id="precio" name="precio" required placeholder="PRECIO" step="0.01">
+              <input type="number" id="kilometraje" name="kilometraje" required placeholder="KILOMETRAJE">
+              
+              <div class="file-upload">
+                  <label for="imagen" class="file-label" id="file-label">
+                      SELECCIONAR IMAGEN
+                  </label>
+
+                  <input type="file" id="imagen" name="imagen" accept="image/*" required>
+              </div>
+
+              <button type="submit" class="btn">GUARDAR</button>
+          </form>
     </div>
+    
+    <script>
+        const input = document.getElementById("imagen");
+        const label = document.getElementById("file-label");
+
+        input.addEventListener("change", function() {
+            if (this.files.length > 0) {
+                label.textContent = "IMAGEN SELECCIONADA";
+                label.style = "background: linear-gradient(135deg,#28a745,#a8e6b5,#53c16a,#eefaf0);";
+            } else {
+                label.textContent = "SELECCIONAR IMAGEN";
+            }
+        });
+    </script>
+    
 </body>
 </html>

@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Modificar Datos Admin </title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='signin-reg.css') }}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body class="background">
     <a href="/gestionUsuarios" class="back-btn">
@@ -17,14 +15,10 @@
       {% for category, mensaje in mensajes %}
           <label class="message {{ category }}">{{ mensaje }}</label>
       {% endfor %}
-      <form action="/modificarDatosAdmin?id={{ usuario.IDUsuario }}" method="POST">
-          <div class="Cuerpo">
+      <form action="/modificarDatosAdmin?id={{ usuario.IDUsuario }}" method="POST" style="gap: 25px;padding: 60px 80px;background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(12px);border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.6);">
               <input type="email" id="email" name="email" placeholder="CORREO ELECTRÓNICO" value="{{ usuario.Email }}" required>
               <input type="password" id="password" name="password" placeholder="CONTRASEÑA NUEVA">
-          </div>
-          <div class="Botones">
               <button type="submit" class="btn">CONFIRMAR</button>
-          </div>
       </form>
   </div>
 </body>

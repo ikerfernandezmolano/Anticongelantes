@@ -6,21 +6,20 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body class="background">
+
 <div class="nav-header">
     {% if usuario and usuario.Estado == 'Admin' %}
         <button class="btn" style="padding:8px 15px; margin-right:10px; background: linear-gradient(135deg,#28a745,#a8e6b5,#53c16a,#eefaf0);" onclick="window.location.href='/admin_panel'">
-                PANEL ADMIN
+            PANEL ADMIN
         </button>
-
     {% endif %}
 
     {% if usuario and usuario.Estado != 'Admin' %}
         <button class="btn" style="background:#1a1a1a; border: 1px solid #ff4d4d; padding:7px 15px; width: 70px; border-radius:10px; color:white; text-decoration:none; font-weight:bold; margin-right:10px;" onclick="window.location.href='{{ url_for('catalogo.mis_favoritos') }}'">
-        ♥️
+            ♥️
         </button>
-        
         <button class="btn" style="padding:8px 15px; margin-right:10px;" onclick="window.location.href='/modificarDatos'">
-                MODIFICAR DATOS
+            MODIFICAR DATOS
         </button>
     {% endif %}
 
@@ -28,37 +27,105 @@
     <a href="/logout" style="color:#ff4d4d; text-decoration:none; font-weight:bold; margin-left:10px;">Cerrar Sesión</a>
 </div>
 
-<div class="main-wrapper">
-    <h1 class="titulo-catalogo">Catálogo de Vehículos</h1>
-
-    <div class="catalogo-container">
-        {% for coche in coches %}
-        <div class="car-card">
-            <img src="{{ url_for('static', filename=coche['imagen']) }}"
-                 class="car-img"
-                 onerror="this.src='/static/fondo.jpg'">
-
-            <h2 title="{{ coche['marca'] }}">{{ coche['marca'] }}</h2>
-            <p title="{{ coche['modelo'] }}">{{ coche['modelo'] }}</p>
-
-            <div class="car-price">{{ "{:,.0f}".format(coche['precio']) | replace(',', '.') }} €</div>
-            <div class="car-info">{{ coche['kilometraje'] }} KM</div>
-
-            <button class="btn" style="width:100%; font-weight:bold;"
-                onclick="window.location.href='/detalles/{{ coche['idCoche'] }}'">
-                VER DETALLES
-            </button>
-            {% if usuario and usuario.Estado != 'Admin' %}
-            <form action="{{ url_for('catalogo.añadir_a_favoritos', id_coche=coche['idCoche']) }}" method="POST">
-                <button type="submit" class="btn" style="width:100%; font-weight:bold; margin-top:10px; background: transparent; border: 1px solid #ff4d4d; color: #ff4d4d;">
-                    GUARDAR FAVORITO
-                </button>
-            </form>
-            {% endif %}
+<div class="main-wrapper" style="flex-direction: row; align-items: flex-start; padding-left: 20px;">
+    
+    <aside class="filters-sidebar">
+        <h3>Filtros</h3>
+        
+        <div class="filter-group">
+            <label>Precio Máximo: <span id="price-limit">{{ "{:,.0f}".format(max_p|int) | replace(',', '.') }}</span>€</label>
+            <input type="range" id="price-range" 
+                   min="0" 
+                   max="{{ max_p|int }}" 
+                   step="100" 
+                   value="{{ max_p|int }}">
         </div>
-        {% endfor %}
+
+        <div class="filter-group">
+            <label>KM Máximos: <span id="km-limit">{{ "{:,.0f}".format(max_k|int) | replace(',', '.') }}</span> km</label>
+            <input type="range" id="km-range" 
+                   min="0" 
+                   max="{{ max_k|int }}" 
+                   step="100" 
+                   value="{{ max_k|int }}">
+        </div>
+
+        <button class="btn secondary" onclick="resetFilters()" style="width: 100%; font-size: 14px;">Limpiar Filtros</button>
+    </aside>
+
+    <div class="content-right" style="flex: 1;">
+        <h1 class="titulo-catalogo">Catálogo de Vehículos</h1>
+        <div class="catalogo-container" id="car-grid">
+            {% for coche in coches %}
+            <div class="car-card" data-price="{{ coche['precio'] }}" data-km="{{ coche['kilometraje'] }}">
+                <img src="{{ url_for('static', filename=coche['imagen']) }}" class="car-img" onerror="this.src='/static/fondo.jpg'">
+                
+                <h2 title="{{ coche['marca'] }}">{{ coche['marca'] }}</h2>
+                <p title="{{ coche['modelo'] }}">{{ coche['modelo'] }}</p>
+
+                <div class="car-price">{{ "{:,.0f}".format(coche['precio']) | replace(',', '.') }} €</div>
+                <div class="car-info">{{ coche['kilometraje'] }} KM</div>
+
+                <button class="btn" style="width:100%; font-weight:bold;" onclick="window.location.href='/detalles/{{ coche['idCoche'] }}'">
+                    VER DETALLES
+                </button>
+
+                {% if usuario and usuario.Estado != 'Admin' %}
+                <form action="{{ url_for('catalogo.añadir_a_favoritos', id_coche=coche['idCoche']) }}" method="POST">
+                    <button type="submit" class="btn" style="width:100%; font-weight:bold; margin-top:10px; background: transparent; border: 1px solid #ff4d4d; color: #ff4d4d;">
+                        GUARDAR FAVORITO
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const priceRange = document.getElementById('price-range');
+    const kmRange = document.getElementById('km-range');
+    const priceLimit = document.getElementById('price-limit');
+    const kmLimit = document.getElementById('km-limit');
+    const carCards = document.querySelectorAll('.car-card');
+
+    function filterCars() {
+        const maxPrice = parseInt(priceRange.value);
+        const maxKm = parseInt(kmRange.value);
+
+        // Actualizar los números que ve el usuario
+        priceLimit.innerText = maxPrice.toLocaleString('es-ES');
+        kmLimit.innerText = maxKm.toLocaleString('es-ES');
+
+        carCards.forEach(card => {
+            // Importante: Asegurarse de que los valores sean números para comparar
+            const carPrice = parseInt(card.getAttribute('data-price'));
+            const carKm = parseInt(card.getAttribute('data-km'));
+
+            if (carPrice <= maxPrice && carKm <= maxKm) {
+                card.style.display = "block";
+            } else {
+                card.style.display = "none";
+            }
+        });
+    }
+
+    window.resetFilters = function() {
+        priceRange.value = 1000000;
+        kmRange.value = 3000000;
+        filterCars();
+    }
+
+    // Eventos para actualizar en tiempo real
+    priceRange.addEventListener('input', filterCars);
+    kmRange.addEventListener('input', filterCars);
+
+    // Ejecutar una vez al cargar por si acaso
+    filterCars();
+});
+</script>
 
 </body>
 </html>

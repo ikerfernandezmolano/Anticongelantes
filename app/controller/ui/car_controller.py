@@ -15,9 +15,21 @@ def car_blueprint(db):
     @bp.route("/catalogo")
     def listar_coches():
         coches = model.get_all()
-        # En tu proyecto, los datos del usuario suelen venir de Sesion().getSession()
         usuario_actual = Sesion().getSession()
-        return render_template("catalogo.html", coches=coches, usuario=usuario_actual)
+
+        # Calculamos los máximos reales (si hay coches)
+        if coches:
+            max_precio_real = max(c['precio'] for c in coches)
+            max_km_real = max(c['kilometraje'] for c in coches)
+        else:
+            max_precio_real = 600000
+            max_km_real = 500000
+
+        return render_template("catalogo.html", 
+                               coches=coches, 
+                               usuario=usuario_actual,
+                               max_p=max_precio_real,
+                               max_k=max_km_real)
 
     # GESTIONAR COCHES (VISTA ADMIN)
     @bp.route("/manage_cars")

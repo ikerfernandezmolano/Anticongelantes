@@ -101,7 +101,23 @@ def catalogo_blueprint(db):
             return redirect(url_for('inicioSesion.iniciarSesion'))
 
         lista_vehiculos = service.get_all()
-        return render_template('catalogo.html', coches=lista_vehiculos, usuario=usuario_sesion)
+
+        # --- LÓGICA PARA LOS MÁXIMOS ---
+        if lista_vehiculos:
+            # Usamos int() y (c['precio'] or 0) por si hay valores nulos en la DB
+            max_p = int(max((c['precio'] or 0) for c in lista_vehiculos))
+            max_k = int(max((c['kilometraje'] or 0) for c in lista_vehiculos))
+        else:
+            # Valores por defecto si la base de datos está vacía
+            max_p = 600000
+            max_k = 500000
+
+        # Enviamos todo al template
+        return render_template('catalogo.html', 
+                               coches=lista_vehiculos, 
+                               usuario=usuario_sesion,
+                               max_p=max_p,
+                               max_k=max_k)
 
     # ADMIN
     @bp.route("/admin_panel")

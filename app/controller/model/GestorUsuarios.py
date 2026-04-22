@@ -8,12 +8,12 @@ class GestorUsuarios:
         
 #-----------------------AÑADIR/ELIMINAR USUARIO-----------------------------#
 
-    def añadirUsuario(self, pUser, pEmail, pPasswd):
+    def añadirUsuario(self, pUser, pEmail, pPasswd, pEstado="Espera"):
         # Añade un usuario a la base de datos y devuelve código de estado
         try:
             self.db.executeSQL(
                 sql="INSERT INTO Usuario (Nombre, Email, Contrasena,Estado) VALUES (?,?,?,?)",
-                parameters=[pUser.strip(),pEmail.strip(),pPasswd.strip(),"Espera"]
+                parameters=[pUser.strip(),pEmail.strip(),pPasswd.strip(),pEstado]
             )
             return 0
         except Exception as e:
@@ -96,9 +96,9 @@ class GestorUsuarios:
 #-----------------------------GETTERS MANAGE----------------------------------#
         
     def get_aceptados(self):
-        # Devuelve una lista con los usuarios aceptados
+        # Devuelve una lista con los usuarios aceptados y administradores
         rows = self.db.execSQL(
-            sql="SELECT * FROM Usuario WHERE Estado = 'Aceptado'"
+            sql="SELECT * FROM Usuario WHERE Estado = 'Aceptado' OR Estado = 'Admin'"
         )
 
         return [ dict(row) for row in rows ]
@@ -131,6 +131,20 @@ class GestorUsuarios:
         # Elimina al usuario de la base de datos
         self.db.executeSQL(
             sql="DELETE FROM Usuario WHERE IDUsuario = ?",
+            parameters=[user_id]
+        )
+        
+    def poner_espera(self, user_id):
+        # Cambia el estado del usuario a Espera
+        self.db.executeSQL(
+            sql="UPDATE Usuario SET Estado = 'Espera' WHERE IDUsuario = ?",
+            parameters=[user_id]
+        )
+        
+    def hacer_admin(self, user_id):
+        # Cambia el estado del usuario a Admin
+        self.db.executeSQL(
+            sql="UPDATE Usuario SET Estado = 'Admin' WHERE IDUsuario = ?",
             parameters=[user_id]
         )
         

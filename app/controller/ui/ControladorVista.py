@@ -241,15 +241,27 @@ def gestionUsuarios_blueprint(db):
             return "No tienes los permisos necesarios para utilizar esta interfaz", 400
         else:
             if request.method == 'POST':
-                user_id = int(request.form.get('user_id'))
                 accion = request.form.get('accion')
 
-                if accion == 'aceptar':
-                    service.aceptar(user_id)
-                elif accion == 'rechazar':
-                    service.rechazar(user_id)
-                elif accion == 'eliminar':
-                    service.eliminar(user_id) 
+                if accion == 'crear_usuario':
+                    nombre = request.form.get('nombre')
+                    email = request.form.get('email')
+                    password = request.form.get('password')
+                    service.añadirUsuario(nombre, email, password, "Aceptado")
+                else:
+                    user_id = request.form.get('user_id')
+                    if user_id:
+                        user_id = int(user_id)
+                        if accion == 'aceptar':
+                            service.aceptar(user_id)
+                        elif accion == 'rechazar':
+                            service.rechazar(user_id)
+                        elif accion == 'eliminar':
+                            service.eliminar(user_id) 
+                        elif accion == 'espera':
+                            service.poner_espera(user_id)
+                        elif accion == 'hacer_admin':
+                            service.hacer_admin(user_id)
 
                 # Redirige a la misma página para recargar la lista
                 return redirect(url_for('gestionUsuarios.gestionUsuarios'))
@@ -262,4 +274,3 @@ def gestionUsuarios_blueprint(db):
     
 
     
-
